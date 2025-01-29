@@ -176,6 +176,7 @@
         let loggingEnabled = true; // Default logging enabled
         let detailedLoggingEnabled = false; // Default detailed logging disabled
         let undoStack = []; // Stack for undo operations
+        let warningDetected = false; // Flag for warning detection
         const logToggleBtn = document.getElementById('logToggleBtn');
 
         function toggleLogging() {
@@ -202,6 +203,11 @@
             const logContent = document.getElementById('logContent');
             logContent.innerHTML += `<p>${message}</p>`;
             logArea.scrollTop = logArea.scrollHeight; // Auto-scroll to the bottom
+
+            // Check if a warning is in the message
+            if (message.startsWith('Warning:')) {
+                warningDetected = true; // Set the warning flag if a warning is logged
+            }
         }
 
         function removeCoin(j) {
@@ -216,7 +222,7 @@
                 }
                 recordAction(`removeCoin(${j})`);
                 undoStack.push({ action: `removeCoin`, params: [j], before: { ...getCurrentState() } }); // Record state for undo
-                if (undoStack.length > 3) undone(); // Limit stack to last 3 actions
+                undone(); // Limit stack to last 3 actions
             } else {
                 logMessage(`Warning: Box B${j} is empty!`);
             }
@@ -236,7 +242,7 @@
                 }
                 recordAction(`removeCertainFrom(${j}, ${k})`);
                 undoStack.push({ action: `removeCertainFrom`, params: [j, k], before: { ...getCurrentState() } }); // Record state for undo
-                if (undoStack.length > 3) undone(); // Limit stack to last 3 actions
+                undone(); // Limit stack to last 3 actions
             } else {
                 logMessage(`Warning: Not enough coins in Box B${j} to remove ${k}!`);
             }
@@ -255,7 +261,7 @@
                 }
                 recordAction(`removeAllFrom(${j})`);
                 undoStack.push({ action: `removeAllFrom`, params: [j], before: { ...getCurrentState() } }); // Record state for undo
-                if (undoStack.length > 3) undone(); // Limit stack to last 3 actions
+                undone(); // Limit stack to last 3 actions
             } else {
                 logMessage(`Warning: Box B${j} is empty!`);
             }
@@ -278,7 +284,7 @@
                 }
                 recordAction(`swapBoxes(${k})`);
                 undoStack.push({ action: `swapBoxes`, params: [k], before: { ...getCurrentState() } }); // Record state for undo
-                if (undoStack.length > 3) undone(); // Limit stack to last 3 actions
+                undone(); // Limit stack to last 3 actions
             } else {
                 logMessage(`Warning: Box B${k} is empty!`);
             }
@@ -365,14 +371,31 @@
                 return;
             }
 
-            for (let action of recordedMacros[name]) {
-                try {
-                    eval(action); // Execute the recorded action
-                } catch (e) {
-                    logMessage(`Stopped playing macro '${name}': ${e.message}`);
-                    return; // Stop if there's an error (like a warning)
+            let continuePlaying = true;
+
+            while (continuePlaying) {
+                continuePlaying = false; // Assume we won't continue unless we execute an action
+
+                for (let action of recordedMacros[name]) {
+                    try {
+                        eval(action); // Execute the recorded action
+                    } catch (e) {
+                        logMessage(`Stopped playing macro '${name}': ${e.message}`); // Log the error
+                        return; // Exit if there's a critical error
+                    }
+
+                    // Check if a warning was logged
+                    if (warningDetected) {
+                        logMessage(`Warning detected during execution of '${name}'. Stopping playback.`);
+                        warningDetected = false; // Reset the warning flag
+                        return; // Return on warning
+                    }
+
+                    continuePlaying = true; // Mark that we executed an action
                 }
             }
+            
+            logMessage(`Finished playing macro '${name}'.`);
         }
 
         function undo() {
@@ -384,6 +407,12 @@
             const lastAction = undoStack.pop();
             restoreState(lastAction.before); // Restore to the state before the last action
             logMessage(`Undid action: ${lastAction.action}(${lastAction.params.join(', ')})`);
+        }
+
+        function undone() {
+            if (undoStack.length > 3) {
+                undoStack.shift(); // Remove the oldest action
+            }
         }
 
         function getCurrentState() {
