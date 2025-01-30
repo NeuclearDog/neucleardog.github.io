@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIN Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .building {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .inactive {
+            color: red;
+        }
+
+        .resource {
+            margin: 10px;
+        }
+
+        button {
+            margin: 5px;
+        }
+
+        .building-input {
+            margin-right: 5px;
+        }
+
+        #exportOutput {
+            width: 100%;
+            height: 100px;
+        }
+
+        .working-count {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>CIN Sandbox</h1>
+    <h2><a href="https://neucleardog.github.io/CIN/sandbox" target="_blank">Go to Customizable Sandbox</a></h2>
+
+    <h2>Available Buildings</h2>
+    <div id="buildingsContainer"></div>
+
+    <h2>Buy Building</h2>
+    <select id="buildingSelect"></select>
+    <input type="number" id="buildingQuantity" class="building-input" placeholder="Quantity" min="1" value="1">
+    <button onclick="buyBuilding()">Buy Building</button>
+
+    <h2>Set Working Buildings</h2>
+    <div id="workingBuildingsContainer"></div>
+
+    <h2>Export/Import Configuration</h2>
+    <button onclick="exportData()">Export Game Data</button>
+    <textarea id="exportOutput" placeholder='Exported game data will appear here...'></textarea>
+    <h4>Import Game Data</h4>
+    <textarea id="importData" placeholder='Paste your JSON here...' rows="10" style="width:100%;"></textarea>
+    <button onclick="importData()">Import Game Data</button>
+
+    <h2>Resource Display</h2>
+    <div id="resourceDisplay"></div>
+
+    <script>
+        // Game variables
+        let resources = {};
+        let buildings = [];
+
+        // Initialize resource display
+        function updateResourceDisplay() {
+            const resourceDisplay = document.getElementById('resourceDisplay');
+            resourceDisplay.innerHTML = "<strong>Resources:</strong><br>";
+            for (const [key, value] of Object.entries(resources)) {
+                resourceDisplay.innerHTML += `
+                    <div class="resource">${key}: ${value}</div>`;
+            }
+        }
+
+        // Function to create and display building elements
+        function createBuilding(building) {
+            const buildingDiv = document.createElement('div');
+            buildingDiv.className = 'building';
+            buildingDiv.innerHTML = `
+                <strong>${building.name}</strong><br>
+                Cost: ${JSON.stringify(building.cost)}<br>
+                Production: ${JSON.stringify(building.production)}<br>
+                Active Instances: <span id="count-${building.name}">${building.count}</span>
+            `;
+            document.getElementById('buildingsContainer').appendChild(buildingDiv);
+        }
+
+        // Populate building dropdown for purchasing
+        function populateBuildingSelect() {
+            const buildingSelect = document.getElementById('buildingSelect');
+            buildingSelect.innerHTML = ''; // Clear previous options
+
+            // Add buildings from imported data
+            buildings.forEach(building => {
+                const option = document.createElement('option');
+                option.value = building.name;
+                option.textContent = building.name;
+                buildingSelect.appendChild(option);
+            });
+        }
+
+        // Function to update production rates based on buildings
+        function updateProduction() {
+            buildings.forEach(building => {
+                const canOperate = Object.keys(building.dependencies || {}).every(dep => {
+                    return resources[dep] >= building.dependencies[dep];
+                });
+
+                if (canOperate) {
+                    for (const [resource, amount] of Object.entries(building.production)) {
+                        const count = building.workingCount || 0;
+                        if (!(resource in resources)) resources[resource] = 0; // Initialize if not present
+                        resources[resource] = Math.max(0, resources[resource] + (amount * count)); // Total production based on working instances
+                    }
+                }
+            });
+
+            updateResourceDisplay();
+        }
+
+        // Start production loop
+        setInterval(updateProduction, 1000); // Update every second
+
+        // Function to buy a building
+        function buyBuilding() {
+            const buildingName = document.getElementById('buildingSelect').value;
+            const quantity = parseInt(document.getElementById('buildingQuantity').value) || 1;
+
+            const building = buildings.find(b => b.name === buildingName);
+            const canBuild = Object.keys(building.cost || {}).every(resource => {
+                return resources[resource] >= building.cost[resource] * quantity;
+            });
+
+            if (canBuild) {
+                // Deduct costs for all buildings being bought
+                Object.keys(building.cost || {}).forEach(resource => {
+                    resources[resource] -= building.cost[resource] * quantity;
+                });
+
+                // Update building counts and display
+                building.count += quantity;
+                document.getElementById(`count-${building.name}`).innerText = building.count;
+
+                // Create working count controls for the new building if it wasn't present before
+                if (!document.getElementById(`workingCount-${building.name}`)) {
+                    createWorkingCountControls(building);
+                }
+
+                updateWorkingCount(building); // Update working count for this building
+            } else {
+                alert("Not enough resources to purchase the building!");
+            }
+        }
+
+        // Function to create working count controls for buildings
+        function createWorkingCountControls(building) {
+            const workingCountDiv = document.createElement('div');
+            workingCountDiv.className = 'working-count';
+            workingCountDiv.id = `workingCount-${building.name}`;
+            workingCountDiv.innerHTML = `
+                <strong>${building.name} Working Count:</strong>
+                <button onclick="adjustWorkingCount('${building.name}', -1)">-</button>
+                <span id="workingCountValue-${building.name}">${building.workingCount || 0}</span>
+                <button onclick="adjustWorkingCount('${building.name}', 1)">+</button>
+            `;
+            document.getElementById('workingBuildingsContainer').appendChild(workingCountDiv);
+        }
+
+        // Function to increase or decrease working count
+        function adjustWorkingCount(buildingName, delta) {
+            const building = buildings.find(b => b.name === buildingName);
+            const newCount = (building.workingCount || 0) + delta;
+
+            if (newCount >= 0 && newCount <= building.count) { // Ensure within bounds
+                building.workingCount = newCount;
+                document.getElementById(`workingCountValue-${buildingName}`).innerText = newCount;
+                updateProduction(); // Update production based on the new working count
+            }
+        }
+
+        // Function to export game data as JSON to the text area
+        function exportData() {
+            const gameData = {
+                resources: resources,
+                buildings: buildings // Include buildings with counts
+            };
+            const jsonData = JSON.stringify(gameData, null, 2); // Pretty print
+            document.getElementById('exportOutput').value = jsonData; // Output to text area
+        }
+
+        // Function to import game data from JSON
+        function importData() {
+            try {
+                const data = JSON.parse(document.getElementById('importData').value);
+                resources = data.resources;
+
+                // Completely replace existing buildings with imported buildings
+                buildings = data.buildings.map(importedBuilding => ({
+                    ...importedBuilding,
+                    count: importedBuilding.count,
+                    workingCount: importedBuilding.workingCount
+                }));
+
+                updateResourceDisplay();
+                
+                // Clear previous building and working buildings display
+                document.getElementById('buildingsContainer').innerHTML = '';
+                document.getElementById('workingBuildingsContainer').innerHTML = '';
+                buildings.forEach(building => {
+                    createBuilding(building);
+                    createWorkingCountControls(building);
+                });
+
+                // Refresh the dropdown
+                populateBuildingSelect();
+            } catch (error) {
+                alert("Failed to import data. Please check the format.");
+                console.error("Import error:", error);
+            }
+        }
+
+        // Initialize the game display
+        updateResourceDisplay();
+        populateBuildingSelect();  // Initially populate the building dropdown (empty)
+
+    </script>
+
+</body>
+
+</html>
