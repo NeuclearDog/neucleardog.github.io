@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIN Sandbox</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .building {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .resource {
+            margin: 10px;
+        }
+
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Customizable Game</h1>
+
+    <h2><a href="https://neucleardog.github.io/CIN/sandbox">Go to Uncustomizable Version</a></h2>
+
+    <h2>Set Starting Resources</h2>
+    <input type="text" id="startingResources" placeholder='{"copper": 50, "lead": 50, "electricity": 0}'>
+    <button onclick="setStartingResources()">Set Resources</button>
+
+    <h2>Add New Building</h2>
+    <input type="text" id="newBuildingName" placeholder="Building Name">
+    <div>
+        <strong>Build Costs:</strong>
+        <div id="costInputContainer"></div>
+        <button onclick="addCostField()">Add Cost</button>
+    </div>
+    <div>
+        <strong>Production:</strong>
+        <div id="productionInputContainer"></div>
+        <button onclick="addProductionField()">Add Production</button>
+    </div>
+    <div>
+        <strong>Capacity:</strong>
+        <div id="capacityInputContainer"></div>
+        <button onclick="addCapacityField()">Add Capacity</button>
+    </div>
+    <button onclick="addBuilding()">Add Building</button>
+
+    <h2>Export/Import Configuration</h2>
+    <button onclick="exportData()">Export Game Data</button>
+    <textarea id="importData" placeholder='Paste your JSON here...' rows="10" style="width:100%;"></textarea>
+    <button onclick="importData()">Import Game Data</button>
+
+    <div id="resourceDisplay"></div>
+    <div id="buildings"></div>
+
+    <h2>Manage Resources</h2>
+    <input type="text" id="newResourceName" placeholder="Resource Name">
+    <button onclick="addResource()">Add Resource</button>
+    <div id="resourceManagementContainer"></div>
+
+    <script>
+        // Game variables
+        let resources = {
+            copper: 0,
+            lead: 0,
+            electricity: 0,
+            water: 0,
+            coal: 0,
+            graphite: 0
+        };
+
+        let buildings = [];
+
+        // Initialize resource display
+        function updateResourceDisplay() {
+            const resourceDisplay = document.getElementById('resourceDisplay');
+            resourceDisplay.innerHTML = "<strong>Resources:</strong><br>";
+            for (const [key, value] of Object.entries(resources)) {
+                resourceDisplay.innerHTML += `<div class="resource">${key}: ${value}</div>`;
+            }
+        }
+
+        // Function to set starting resources
+        function setStartingResources() {
+            const startingResources = document.getElementById('startingResources').value;
+            resources = JSON.parse(startingResources);
+            updateResourceDisplay();
+            alert("Starting resources set!");
+        }
+
+        // Function to create and display building elements
+        function createBuilding(building) {
+            const buildingDiv = document.createElement('div');
+            buildingDiv.className = 'building';
+            buildingDiv.innerHTML = `
+                <strong>${building.name}</strong><br>
+                Cost: ${JSON.stringify(building.cost)}<br>
+                Production: ${JSON.stringify(building.production)}<br>
+                Capacity: ${JSON.stringify(building.capacity)}<br>
+                Active Instances: <span id="count-${building.name}">0</span>
+                <button onclick="changeBuildingCount('${building.name}', 1)">+</button>
+                <button onclick="changeBuildingCount('${building.name}', -1)">-</button>
+                <button onclick="build('${building.name}')">Add Building</button>
+                <button onclick="deleteBuilding('${building.name}')">Delete Building</button>
+                <div id="instance-${building.name}"></div>
+            `;
+            document.getElementById('buildings').appendChild(buildingDiv);
+        }
+
+        // Function to change the number of active instances of a building
+        function changeBuildingCount(name, delta) {
+            const countElement = document.getElementById(`count-${name}`);
+            let currentCount = parseInt(countElement.innerText) || 0;
+
+            if (delta > 0) {
+                currentCount++;
+            } else if (delta < 0 && currentCount > 0) {
+                currentCount--;
+            }
+
+            countElement.innerText = currentCount;
+
+            // Update production based on active instances
+            updateProduction();
+        }
+
+        // Function to update production rates based on active instances
+        function updateProduction() {
+            // Reset resource production to zero
+            const productionRates = {};
+            buildings.forEach(building => {
+                const count = parseInt(document.getElementById(`count-${building.name}`).innerText) || 0;
+                for (const [resource, amount] of Object.entries(building.production)) {
+                    if (!(resource in productionRates)) {
+                        productionRates[resource] = 0;
+                    }
+                    productionRates[resource] += amount * count; // Total production based on active instances
+                }
+            });
+
+            // Update resources every second based on production rates
+            for (const [resource, amount] of Object.entries(productionRates)) {
+                if (resources[resource] !== undefined) {
+                    resources[resource] += amount;
+                }
+            }
+
+            updateResourceDisplay();
+        }
+
+        // Start production loop
+        setInterval(updateProduction, 1000); // Update every second
+
+        // Function to build a building
+        function build(name) {
+            const building = buildings.find(b => b.name === name);
+            const canBuild = Object.keys(building.cost).every(resource =>
+                resources[resource] >= building.cost[resource]
+            );
+
+            if (canBuild) {
+                Object.keys(building.cost).forEach(resource => {
+                    resources[resource] -= building.cost[resource];
+                });
+
+                // Create and display the building
+                createBuilding(building);
+                alert(`${building.name} built successfully!`);
+            } else {
+                alert("Not enough resources to build " + name);
+            }
+        }
+
+        // Function to delete a building
+        function deleteBuilding(name) {
+            const index = buildings.findIndex(b => b.name === name);
+            if (index > -1) {
+                buildings.splice(index, 1);
+                updateBuildingList();
+                alert(`${name} deleted successfully!`);
+            }
+        }
+
+        // Function to create a new number input for building costs
+        function addCostField() {
+            const container = document.getElementById('costInputContainer');
+            const input = document.createElement('input');
+            input.placeholder = 'Cost (e.g., copper: 10)';
+            input.className = 'cost-input';
+            container.appendChild(input);
+        }
+
+        // Function to create a new number input for building production
+        function addProductionField() {
+            const container = document.getElementById('productionInputContainer');
+            const input = document.createElement('input');
+            input.placeholder = 'Production (e.g., electricity: 5)';
+            input.className = 'production-input';
+            container.appendChild(input);
+        }
+
+        // Function to create a new number input for building capacity
+        function addCapacityField() {
+            const container = document.getElementById('capacityInputContainer');
+            const input = document.createElement('input');
+            input.placeholder = 'Capacity (e.g., electricity: 20)';
+            input.className = 'capacity-input';
+            container.appendChild(input);
+        }
+
+        // Function to add a new building
+        function addBuilding() {
+            const name = document.getElementById('newBuildingName').value;
+            const costInputs = document.getElementsByClassName('cost-input');
+            const productionInputs = document.getElementsByClassName('production-input');
+            const capacityInputs = document.getElementsByClassName('capacity-input');
+            const cost = {};
+            const production = {};
+            const capacity = {};
+
+            try {
+                for (const input of costInputs) {
+                    const [resource, amount] = input.value.split(':').map(s => s.trim());
+                    cost[resource] = Math.max(0, parseInt(amount) || 0);
+                }
+
+                for (const input of productionInputs) {
+                    const [resource, amount] = input.value.split(':').map(s => s.trim());
+                    production[resource] = Math.max(0, parseInt(amount) || 0);
+                }
+
+                for (const input of capacityInputs) {
+                    const [resource, amount] = input.value.split(':').map(s => s.trim());
+                    capacity[resource] = Math.max(0, parseInt(amount) || 0);
+                }
+
+                const newBuilding = { name, cost, production, capacity };
+                buildings.push(newBuilding);
+                createBuilding(newBuilding);
+                document.getElementById('newBuildingName').value = '';
+                document.getElementById('costInputContainer').innerHTML = '';
+                document.getElementById('productionInputContainer').innerHTML = '';
+                document.getElementById('capacityInputContainer').innerHTML = '';
+            } catch (error) {
+                alert("Error: Please use valid format for buildings.");
+            }
+        }
+
+        // Function to export game data as JSON
+        function exportData() {
+            const gameData = {
+                resources: resources,
+                buildings: buildings
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gameData));
+            const a = document.createElement("a");
+            a.href = dataStr;
+            a.download = "game_data.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Function to import game data from JSON
+        function importData() {
+            try {
+                const data = JSON.parse(document.getElementById('importData').value);
+                resources = data.resources;
+                buildings = data.buildings;
+                // Update displays
+                updateResourceDisplay();
+                buildings.forEach(building => createBuilding(building));
+                alert("Game data imported successfully!");
+            } catch (error) {
+                alert("Failed to import data. Please check the format.");
+            }
+        }
+
+        // Initialize the game display
+        updateResourceDisplay();
+        updateResourceManagement();
+    </script>
+
+</body>
+
+</html>
