@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMO2010-P5</title>
+    <title>IMO2010-5</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -356,11 +356,26 @@
             }
 
             for (let t = 0; t < times; t++) {
+                // Check for warnings at the start of each iteration
+                if (warningDetected) {
+                    logMessage(`Warning detected during execution of '${name}'. Stopping playback.`);
+                    warningDetected = false; // Reset the warning flag
+                    return; // Exit if a warning has been detected
+                }
+                
                 recordedMacros[name].forEach(action => {
                     eval(action); // Execute the recorded action
+
+                    // Check if a warning is raised during action execution
+                    if (warningDetected) {
+                        logMessage(`Warning detected during execution of '${name}'. Stopping playback.`);
+                        warningDetected = false; // Reset the warning flag
+                        return; // Exit on warning
+                    }
                 });
+
+                logMessage(`Played macro '${name}' ${t + 1} time(s).`);
             }
-            logMessage(`Played macro '${name}' ${times} time(s).`);
         }
 
         function playStoredMacroMax() {
@@ -379,19 +394,19 @@
                 for (let action of recordedMacros[name]) {
                     try {
                         eval(action); // Execute the recorded action
+
+                        // Check if a warning was logged
+                        if (warningDetected) {
+                            logMessage(`Warning detected during execution of '${name}'. Stopping playback.`);
+                            warningDetected = false; // Reset the warning flag
+                            return; // Return on warning
+                        }
+
+                        continuePlaying = true; // Mark that we executed an action
                     } catch (e) {
                         logMessage(`Stopped playing macro '${name}': ${e.message}`); // Log the error
                         return; // Exit if there's a critical error
                     }
-
-                    // Check if a warning was logged
-                    if (warningDetected) {
-                        logMessage(`Warning detected during execution of '${name}'. Stopping playback.`);
-                        warningDetected = false; // Reset the warning flag
-                        return; // Return on warning
-                    }
-
-                    continuePlaying = true; // Mark that we executed an action
                 }
             }
             
