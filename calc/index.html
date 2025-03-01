@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top */
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+            overflow: auto; /* Enable scrolling */
+            padding: 20px; /* Add padding to the body */
+        }
+        h1 {
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        #input-container {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between;
+            width: 100%; /* Full width for the input container */
+            max-width:1600px; /* Max width to keep layout neat */
+            margin-bottom: 20px; /* Add space at the bottom */
+        }
+        .operation {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            flex: 1; /* Flexible width on both sides */
+            margin: 0 10px; /* Margin between left and right operations */
+            opacity: 0;
+            animation: fadeIn 1.5s forwards;
+            transition: background 0.5s;
+            display: flex;
+            flex-direction: column;
+        }
+        .caption {
+            text-align: center; /* Center the caption */
+            margin-bottom: 20px;
+            font-size: 1.5em; /* Increase font size of the caption */
+            font-weight: bold;
+        }
+        label {
+            margin: 10px 0;
+            display: block;
+        }
+        input, select {
+            width: 94%;
+            padding: 8px; /* Smaller padding for input boxes */
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px; /* Smaller font size */
+        }
+        button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+            margin-top: 10px; /* Space above buttons */
+        }
+        button:hover {
+            background-color: #367bc8;
+            transform: scale(1.05);
+        }
+        #result, #singleResult {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px; /* Set width for circular button */
+            height: 40px; /* Set height for circular button */
+            border: none;
+            border-radius: 50%; /* Make it circular */
+            cursor: pointer;
+            background-color: #4a90e2; /* Button color */
+            transition: background-color 0.3s, transform 0.3s;
+            display: flex; /* Center the icon */
+            justify-content: center; 
+            align-items: center;
+        }
+        #theme-toggle:hover {
+            background-color: #367bc8;
+            transform: scale(1.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Dark theme styles */
+        body.dark {
+            background-color: #333;
+            color: #f4f4f9;
+        }
+        .operation.dark {
+            background: #444;
+            border: 1px solid #666;
+        }
+        input.dark, select.dark {
+            background-color: #666;
+            color: #f4f4f9;
+            border: 1px solid #888;
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle"></button> <!-- Circular button without text -->
+    <h1>Function Count Calculator</h1>
+    <div class="caption">Calculate Valid Functions</div> <!-- Caption in the middle -->
+    <div id="input-container">
+        <div class="operation" id="single-operation">
+            <h2>Single Operation</h2>
+            <label for="nSingle">Enter n:</label>
+            <input type="number" id="nSingle" min="1" required>
+            <label for="rSingle">Enter r:</label>
+            <input type="number" id="rSingle" min="0" required>
+            <label for="singleAlgorithm">Choose Algorithm:</label>
+            <select id="singleAlgorithm">
+                <option value="bfs">Breadth-First Search (BFS)</option>
+                <option value="dfs">Depth-First Search (DFS)</option>
+            </select>
+            <button id="calculate-single-button">Calculate Single</button>
+            <h2 id="singleResult"></h2>
+        </div>
+        
+        <div class="operation" id="batch-operation">
+            <h2>Batch Operation</h2>
+            <label for="nMin">Enter n Range (min):</label>
+            <input type="number" id="nMin" min="1" required>
+            <label for="nMax">Enter n Range (max):</label>
+            <input type="number" id="nMax" min="1" required>
+            <label for="rMin">Enter r Range (min):</label>
+            <input type="number" id="rMin" min="0" required>
+            <label for="rMax">Enter r Range (max):</label>
+            <input type="number" id="rMax" min="0" required>
+            
+            <label for="batchAlgorithm">Choose Algorithm:</label>
+            <select id="batchAlgorithm">
+                <option value="bfs">Breadth-First Search (BFS)</option>
+                <option value="dfs">Depth-First Search (DFS)</option>
+            </select>
+            <button id="calculate-batch-button">Calculate Batch</button>
+            <button id="export-button" style="margin-top: 10px;">Export CSV</button>
+            <h2 id="batchResult"></h2>
+        </div>
+    </div>
+
+    <script>
+        let isSyncEnabled = true; // Track sync state
+        let isDarkMode = false; // Track dark mode state
+        let results = []; // Store results for CSV export
+
+        document.getElementById('theme-toggle').onclick = function() {
+            isDarkMode = !isDarkMode; // Toggle dark mode state
+            document.body.classList.toggle('dark', isDarkMode);
+            Array.from(document.querySelectorAll('.operation')).forEach(op => {
+                op.classList.toggle('dark', isDarkMode);
+            });
+            Array.from(document.querySelectorAll('input, select')).forEach((element) => {
+                element.classList.toggle('dark', isDarkMode);
+            });
+        };
+
+        document.getElementById('calculate-single-button').onclick = function() {
+            const n = parseInt(document.getElementById('nSingle').value);
+            const r = parseInt(document.getElementById('rSingle').value);
+            document.getElementById('singleResult').innerText = "Calculating...";
+
+            if (document.getElementById('singleAlgorithm').value === 'bfs') {
+                calculateFunctions(n, r, bfsCountValidFunctions)
+                    .then(result => {
+                        document.getElementById('singleResult').innerText = `Valid Functions: ${result}`;
+                    });
+            } else {
+                calculateFunctions(n, r, dfsCountValidFunctions)
+                    .then(result => {
+                        document.getElementById('singleResult').innerText = `Valid Functions: ${result}`;
+                    });
+            }
+        };
+
+        document.getElementById('calculate-batch-button').onclick = function() {
+            const nMin = parseInt(document.getElementById('nMin').value);
+            const nMax = parseInt(document.getElementById('nMax').value);
+            const rMin = parseInt(document.getElementById('rMin').value);
+            const rMax = parseInt(document.getElementById('rMax').value);
+            document.getElementById('batchResult').innerText = "Calculating...";
+            results = []; // Clear previous results
+
+            // Iterate over the range of n and r values
+            const promises = [];
+            for (let n = nMin; n <= nMax; n++) {
+                for (let r = rMin; r <= rMax; r++) {
+                    if (document.getElementById('batchAlgorithm').value === 'bfs') {
+                        promises.push(calculateFunctions(n, r, bfsCountValidFunctions));
+                    } else {
+                        promises.push(calculateFunctions(n, r, dfsCountValidFunctions));
+                    }
+                }
+            }
+
+            // Wait for all calculations to complete
+            Promise.all(promises).then(() => {
+                if (isSyncEnabled) {
+                    document.getElementById('batchResult').innerText = "Batch calculations completed.";
+                }
+            });
+        };
+
+        document.getElementById('export-button').onclick = function() {
+            exportToCSV(results);
+        };
+
+        function calculateFunctions(n, r, algorithmFunction) {
+            return algorithmFunction(n, r).then(result => {
+                results.push({ n: n, r: r, validFunctions: result }); // Store results for CSV
+                return result; // Return the valid function count
+            });
+        }
+
+        // Efficient BFS implementation
+        function bfsCountValidFunctions(n, r) {
+            return new Promise((resolve) => {
+                let validCount = 0;
+                const queue = [];
+                
+                // Start with an object containing index and current function
+                queue.push({ index: 0, currentFunction: new Array(n).fill(null) });
+
+                while (queue.length > 0) {
+                    const { index, currentFunction } = queue.shift();
+
+                    // If the function is fully defined
+                    if (index === n) {
+                        if (isValidFunction(currentFunction, n, r)) {
+                            validCount++;
+                        }
+                        continue;
+                    }
+
+                    // Loop to generate new states
+                    for (let j = 1; j <= n; j++) {
+                        const newFunction = currentFunction.slice(); // Make a copy
+                        newFunction[index] = j; // Set value
+                        queue.push({ index: index + 1, currentFunction: newFunction }); // Move to the next index
+                    }
+                }
+
+                resolve(validCount); // Resolve with the count of valid functions
+            });
+        }
+
+        // Efficient DFS implementation
+        function dfsCountValidFunctions(n, r) {
+            return new Promise((resolve) => {
+                let validCount = 0;
+                const stack = [{ index: 0, currentFunction: new Array(n).fill(null) }];
+
+                while (stack.length > 0) {
+                    const { index, currentFunction } = stack.pop();
+
+                    // If the function is fully defined
+                    if (index === n) {
+                        if (isValidFunction(currentFunction, n, r)) {
+                            validCount++;
+                        }
+                        continue;
+                    }
+
+                    // Loop to generate new states
+                    for (let j = 1; j <= n; j++) {
+                        const newFunction = currentFunction.slice(); // Make a copy
+                        newFunction[index] = j; // Set value
+                        stack.push({ index: index + 1, currentFunction: newFunction }); // Move to next index
+                    }
+                }
+
+                resolve(validCount); // Resolve with the count of valid functions
+            });
+        }
+
+        function isValidFunction(func, n, r) {
+            for (let x = 1; x <= n; x++) {
+                let current = x;
+                for (let i = 0; i < r; i++) {
+                    current = func[current - 1]; // -1 for zero-based index
+                }
+                if (current > x) {
+                    return false; // Not valid if f^(r)(x) > x
+                }
+            }
+            return true; // All x are valid
+        }
+
+        // Export results to CSV
+        function exportToCSV(results) {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "n,r,validFunctions\n"; // Add header
+            results.forEach(result => {
+                csvContent += `${result.n},${result.r},${result.validFunctions}\n`; // Add data for each result
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "function_results.csv");
+            document.body.appendChild(link);
+            link.click(); // Trigger download
+            document.body.removeChild(link); // Clean up
+        }
+    </script>
+</body>
+</html>
