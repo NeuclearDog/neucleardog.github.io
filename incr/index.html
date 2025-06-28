@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strength Ascension - Ultimate Edition</title>
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="icon" href="assets/icons/favicon.ico">
+</head>
+<body data-theme="dark">
+    <div class="theme-selector">
+        <button class="theme-btn" data-theme="dark">🌙 Dark</button>
+        <button class="theme-btn" data-theme="light">☀️ Light</button>
+        <button class="theme-btn" data-theme="neon">⚡ Neon</button>
+        <button class="theme-btn" data-theme="retro">🎮 Retro</button>
+        <button class="theme-btn" data-theme="nature">🌿 Nature</button>
+        <button class="theme-btn" data-theme="space">🌌 Space</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">💪 STRENGTH ASCENSION 💪</h1>
+            <p class="subtitle">From weakling to cosmic entity - Your ultimate journey awaits!</p>
+            
+            <div class="character-selection">
+                <button class="character-btn" id="boy-btn" onclick="selectCharacter('boy')">👦 Boy</button>
+                <button class="character-btn" id="girl-btn" onclick="selectCharacter('girl')">👧 Girl</button>
+                <button class="character-btn hidden" id="alien-btn" onclick="selectCharacter('alien')">👽 Alien</button>
+                <button class="character-btn hidden" id="robot-btn" onclick="selectCharacter('robot')">🤖 Robot</button>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <!-- Stats Panel -->
+            <div class="panel stats-panel">
+                <h3>💪 Your Power</h3>
+                <div class="character-avatar" id="character-avatar">👦</div>
+                <div class="strength-display" id="strength-display">1.00 kg</div>
+                <div class="strength-tier" id="strength-tier">Weakling</div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">💰 Money:</span>
+                        <span id="money-display">$0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⭐ Prestige:</span>
+                        <span id="prestige-level">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🔥 Multiplier:</span>
+                        <span id="strength-multiplier">1.00x</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">💎 Gems:</span>
+                        <span id="gems-display">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🥊 Fights Won:</span>
+                        <span id="fights-won">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🏆 Win Streak:</span>
+                        <span id="win-streak">0</span>
+                    </div>
+                </div>
+                
+                <div class="milestone" id="current-goal">Goal: Lift 10 kg</div>
+            </div>
+
+            <!-- Training Panel -->
+            <div class="panel training-panel">
+                <h3>🏋️ Training Ground</h3>
+                
+                <button class="training-btn" id="basic-training" onclick="basicTraining()">
+                    <div class="btn-content">
+                        <div class="btn-title">Basic Training</div>
+                        <div class="btn-gain">+<span id="basic-gain">0.10</span> strength</div>
+                        <div class="btn-cooldown" id="basic-cooldown"></div>
+                    </div>
+                </button>
+                
+                <button class="training-btn" id="intense-training" onclick="intenseTraining()">
+                    <div class="btn-content">
+                        <div class="btn-title">Intense Training</div>
+                        <div class="btn-gain">+<span id="intense-gain">0.50</span> strength</div>
+                        <div class="btn-cooldown" id="intense-cooldown"></div>
+                    </div>
+                </button>
+                
+                <button class="training-btn" id="extreme-training" onclick="extremeTraining()">
+                    <div class="btn-content">
+                        <div class="btn-title">Extreme Training</div>
+                        <div class="btn-gain">+<span id="extreme-gain">2.50</span> strength</div>
+                        <div class="btn-cooldown" id="extreme-cooldown"></div>
+                    </div>
+                </button>
+
+                <button class="training-btn legendary hidden" id="legendary-training" onclick="legendaryTraining()">
+                    <div class="btn-content">
+                        <div class="btn-title">🌟 Legendary Training</div>
+                        <div class="btn-gain">+<span id="legendary-gain">100.00</span> strength</div>
+                        <div class="btn-cooldown" id="legendary-cooldown"></div>
+                    </div>
+                </button>
+
+                <button class="training-btn cosmic hidden" id="cosmic-training" onclick="cosmicTraining()">
+                    <div class="btn-content">
+                        <div class="btn-title">🌌 Cosmic Training</div>
+                        <div class="btn-gain">+<span id="cosmic-gain">10000.00</span> strength</div>
+                        <div class="btn-cooldown" id="cosmic-cooldown"></div>
+                    </div>
+                </button>
+
+                <button class="training-btn earth-challenge hidden" id="earth-challenge" onclick="earthChallenge()">
+                    <div class="btn-content">
+                        <div class="btn-title">🌍 LIFT THE EARTH!</div>
+                        <div class="btn-gain">Ultimate Challenge</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Fighting Panel -->
+            <div class="panel fighting-panel">
+                <h3>🥊 Combat Arena</h3>
+                <div class="fight-info">
+                    <p>Fight opponents to gain strength and money!</p>
+                    <p>⚠️ Losing fights will cost you resources!</p>
+                    <div id="fight-cooldown" class="cooldown-display"></div>
+                </div>
+                
+                <div id="fight-opponents" class="fight-opponents-list">
+                    <!-- Opponents populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Shop Panel -->
+            <div class="panel shop-panel">
+                <h3>🛒 Equipment Shop</h3>
+                
+                <div class="shop-tabs">
+                    <button class="shop-tab active" onclick="switchShopTab('equipment')">⚡ Equipment</button>
+                    <button class="shop-tab" onclick="switchShopTab('consumables')">🧪 Consumables</button>
+                    <button class="shop-tab" onclick="switchShopTab('special')">💎 Special</button>
+                </div>
+
+                <div class="shop-content" id="equipment-shop">
+                    <button class="upgrade-btn" id="protein-shake" onclick="buyUpgrade('proteinShake')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🥤 Protein Shake</div>
+                            <div class="upgrade-cost">Cost: $<span id="protein-cost">10</span></div>
+                            <div class="upgrade-desc">+1.5 strength per training</div>
+                            <div class="upgrade-owned">Owned: <span id="protein-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn" id="gym-membership" onclick="buyUpgrade('gymMembership')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🏃 Gym Membership</div>
+                            <div class="upgrade-cost">Cost: $<span id="gym-cost">100</span></div>
+                            <div class="upgrade-desc">+5.0 strength per training + idle gains</div>
+                            <div class="upgrade-owned">Owned: <span id="gym-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn" id="personal-trainer" onclick="buyUpgrade('personalTrainer')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">👨‍🏫 Personal Trainer</div>
+                            <div class="upgrade-cost">Cost: $<span id="trainer-cost">1000</span></div>
+                            <div class="upgrade-desc">+25.0 strength per training</div>
+                            <div class="upgrade-owned">Owned: <span id="trainer-owned">0</span></div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="shop-content hidden" id="consumables-shop">
+                    <button class="upgrade-btn" id="energy-drink" onclick="buyConsumable('energyDrink')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">⚡ Energy Drink</div>
+                            <div class="upgrade-cost">Cost: $<span id="energy-cost">50</span></div>
+                            <div class="upgrade-desc">Reduce all cooldowns by 50% for 5 minutes</div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn" id="double-xp" onclick="buyConsumable('doubleXp')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🔥 Double XP Potion</div>
+                            <div class="upgrade-cost">Cost: $<span id="double-cost">200</span></div>
+                            <div class="upgrade-desc">2x strength gains for 10 minutes</div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="shop-content hidden" id="special-shop">
+                    <button class="upgrade-btn gem-upgrade" id="time-warp" onclick="buyGemUpgrade('timeWarp')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">⏰ Time Warp</div>
+                            <div class="upgrade-cost">Cost: <span id="warp-cost">10</span> 💎</div>
+                            <div class="upgrade-desc">Skip all cooldowns instantly</div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn gem-upgrade" id="strength-boost" onclick="buyGemUpgrade('strengthBoost')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">💪 Strength Boost</div>
+                            <div class="upgrade-cost">Cost: <span id="boost-cost">25</span> 💎</div>
+                            <div class="upgrade-desc">Permanent +10% strength multiplier</div>
+                        </div>
+                    </button>
+                </div>
+
+                <button class="prestige-btn" id="prestige-btn" onclick="prestige()">
+                    ✨ PRESTIGE ✨<br>
+                    <small>Reset for permanent bonuses</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- Secondary Panels -->
+        <div class="secondary-area">
+            <!-- Achievements Panel -->
+            <div class="panel achievements-panel">
+                <h3>🏆 Achievements</h3>
+                <div class="achievement-filter">
+                    <button class="filter-btn active" onclick="filterAchievements('all')">All</button>
+                    <button class="filter-btn" onclick="filterAchievements('unlocked')">Unlocked</button>
+                    <button class="filter-btn" onclick="filterAchievements('locked')">Locked</button>
+                    <button class="filter-btn" onclick="filterAchievements('hidden')">Hidden</button>
+                </div>
+                <div id="achievements-list" class="achievements-list">
+                    <!-- Achievements populated by JS -->
+                </div>
+            </div>
+
+            <!-- Statistics Panel -->
+            <div class="panel stats-detailed-panel">
+                <h3>📊 Statistics</h3>
+                <div id="detailed-stats" class="detailed-stats">
+                    <!-- Stats populated by JS -->
+                </div>
+            </div>
+
+            <!-- Hidden Features Panel -->
+            <div class="panel hidden-panel hidden" id="hidden-features">
+                <h3>🔮 Mystical Powers</h3>
+                <div class="hidden-content">
+                    <button class="mystical-btn" id="reality-break" onclick="realityBreak()">
+                        🌀 Break Reality
+                    </button>
+                    <button class="mystical-btn" id="time-loop" onclick="timeLoop()">
+                        🔄 Time Loop
+                    </button>
+                    <button class="mystical-btn" id="dimension-shift" onclick="dimensionShift()">
+                        🌈 Dimension Shift
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Loading Strength Ascension...</h2>
+            <p>Preparing your journey to ultimate power...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/gamestate.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/themes.js"></script>
+    <script src="js/training.js"></script>
+    <script src="js/fighting.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/prestige.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/statistics.js"></script>
+    <script src="js/hidden.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
