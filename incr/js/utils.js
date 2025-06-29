@@ -1,6 +1,3 @@
-// Utility Functions
-
-// Format large numbers with suffixes
 function formatNumber(num, precision = 2) {
     if (num === 0) return '0';
     if (num < 0) return '-' + formatNumber(-num, precision);
@@ -38,7 +35,6 @@ function formatNumber(num, precision = 2) {
     return num.toFixed(precision);
 }
 
-// Format time duration
 function formatTime(milliseconds) {
     if (milliseconds <= 0) return '0s';
     
@@ -58,17 +54,14 @@ function formatTime(milliseconds) {
     }
 }
 
-// Format money
 function formatMoney(amount, precision = 2) {
     return '$' + formatNumber(amount, precision);
 }
 
-// Format percentage
 function formatPercent(value, precision = 1) {
     return (value * 100).toFixed(precision) + '%';
 }
 
-// Get current strength tier
 function getCurrentTier() {
     const strength = gameState.get('strength');
     
@@ -81,7 +74,6 @@ function getCurrentTier() {
     return CONFIG.STRENGTH_TIERS[0];
 }
 
-// Get next strength tier
 function getNextTier() {
     const strength = gameState.get('strength');
     
@@ -94,7 +86,6 @@ function getNextTier() {
     return null;
 }
 
-// Calculate equipment cost
 function calculateEquipmentCost(equipmentType, currentLevel) {
     const config = CONFIG.EQUIPMENT[equipmentType];
     if (!config) return Infinity;
@@ -102,7 +93,6 @@ function calculateEquipmentCost(equipmentType, currentLevel) {
     return Math.floor(config.baseCost * Math.pow(config.costMultiplier, currentLevel));
 }
 
-// Calculate gem upgrade cost
 function calculateGemUpgradeCost(upgradeType, currentLevel) {
     const config = CONFIG.GEM_UPGRADES[upgradeType];
     if (!config) return Infinity;
@@ -114,19 +104,15 @@ function calculateGemUpgradeCost(upgradeType, currentLevel) {
     return config.cost;
 }
 
-// Calculate total strength multiplier
 function calculateStrengthMultiplier() {
     let multiplier = gameState.get('strengthMultiplier');
     
-    // Add equipment bonuses
     const equipment = gameState.get('equipment');
     
-    // Additive bonuses
     multiplier += equipment.proteinShake * CONFIG.EQUIPMENT.proteinShake.effect;
     multiplier += equipment.gymMembership * CONFIG.EQUIPMENT.gymMembership.effect;
     multiplier += equipment.personalTrainer * CONFIG.EQUIPMENT.personalTrainer.effect;
     
-    // Multiplicative bonuses
     if (equipment.superSerum > 0) {
         multiplier *= Math.pow(CONFIG.EQUIPMENT.superSerum.effect, equipment.superSerum);
     }
@@ -137,11 +123,22 @@ function calculateStrengthMultiplier() {
         multiplier *= Math.pow(CONFIG.EQUIPMENT.quantumEnhancer.effect, equipment.quantumEnhancer);
     }
     
-    // Gem upgrade bonuses
+    if (equipment.moonTrainingGround > 0) {
+        multiplier *= Math.pow(CONFIG.EQUIPMENT.moonTrainingGround.effect, equipment.moonTrainingGround);
+    }
+    if (equipment.citySlabLifter > 0) {
+        multiplier *= Math.pow(CONFIG.EQUIPMENT.citySlabLifter.effect, equipment.citySlabLifter);
+    }
+    if (equipment.continentalBarbell > 0) {
+        multiplier *= Math.pow(CONFIG.EQUIPMENT.continentalBarbell.effect, equipment.continentalBarbell);
+    }
+    if (equipment.planetaryDumbbell > 0) {
+        multiplier *= Math.pow(CONFIG.EQUIPMENT.planetaryDumbbell.effect, equipment.planetaryDumbbell);
+    }
+    
     const gemUpgrades = gameState.get('gemUpgrades');
     multiplier *= (1 + gemUpgrades.strengthBoost * CONFIG.GEM_UPGRADES.strengthBoost.effect);
     
-    // Active effect bonuses
     const activeMultiplier = gameState.getActiveEffectValue('strength_multiplier');
     if (activeMultiplier > 0) {
         multiplier *= activeMultiplier;
@@ -150,7 +147,6 @@ function calculateStrengthMultiplier() {
     return multiplier;
 }
 
-// Calculate training gain
 function calculateTrainingGain(trainingType) {
     const baseGain = CONFIG.TRAINING_BASE[trainingType];
     const multiplier = calculateStrengthMultiplier();
@@ -158,7 +154,6 @@ function calculateTrainingGain(trainingType) {
     return baseGain * multiplier;
 }
 
-// Calculate money gain from strength
 function calculateMoneyGain(strengthGained) {
     const baseGain = strengthGained * CONFIG.MONEY_PER_STRENGTH;
     const gemUpgrades = gameState.get('gemUpgrades');
@@ -167,7 +162,6 @@ function calculateMoneyGain(strengthGained) {
     return baseGain * moneyMultiplier;
 }
 
-// Create particle effect
 function createParticles(type, x, y, count) {
     if (!gameState.get('settings.particles')) return;
     
@@ -179,18 +173,15 @@ function createParticles(type, x, y, count) {
             const particle = document.createElement('div');
             particle.className = `particle ${type}`;
             
-            // Position
             const offsetX = (Math.random() - 0.5) * 100;
             const offsetY = (Math.random() - 0.5) * 50;
             particle.style.left = (x || Math.random() * window.innerWidth) + offsetX + 'px';
             particle.style.top = (y || Math.random() * window.innerHeight) + offsetY + 'px';
             
-            // Color
             particle.style.background = config.color;
             
             document.body.appendChild(particle);
             
-            // Remove after animation
             setTimeout(() => {
                 if (particle.parentNode) {
                     particle.parentNode.removeChild(particle);
@@ -200,7 +191,6 @@ function createParticles(type, x, y, count) {
     }
 }
 
-// Show floating text
 function showFloatingText(text, x, y, className = '') {
     const element = document.createElement('div');
     element.textContent = text;
@@ -223,32 +213,26 @@ function showFloatingText(text, x, y, className = '') {
     }, 2000);
 }
 
-// Random number between min and max
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// Random integer between min and max (inclusive)
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Clamp value between min and max
 function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 }
 
-// Linear interpolation
 function lerp(a, b, t) {
     return a + (b - a) * t;
 }
 
-// Ease in-out function
 function easeInOut(t) {
     return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
-// Deep clone object
 function deepClone(obj) {
     if (obj === null || typeof obj !== 'object') return obj;
     if (obj instanceof Date) return new Date(obj.getTime());
@@ -265,7 +249,6 @@ function deepClone(obj) {
     return cloned;
 }
 
-// Debounce function
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -278,7 +261,6 @@ function debounce(func, wait) {
     };
 }
 
-// Throttle function
 function throttle(func, limit) {
     let inThrottle;
     return function(...args) {
@@ -290,7 +272,6 @@ function throttle(func, limit) {
     };
 }
 
-// Get element position
 function getElementPosition(element) {
     const rect = element.getBoundingClientRect();
     return {
@@ -299,7 +280,6 @@ function getElementPosition(element) {
     };
 }
 
-// Check if element is visible
 function isElementVisible(element) {
     const rect = element.getBoundingClientRect();
     return (
@@ -310,7 +290,6 @@ function isElementVisible(element) {
     );
 }
 
-// Animate number change
 function animateNumber(element, from, to, duration = 1000) {
     const startTime = Date.now();
     const difference = to - from;
@@ -331,49 +310,40 @@ function animateNumber(element, from, to, duration = 1000) {
     requestAnimationFrame(update);
 }
 
-// Play sound effect (placeholder for future implementation)
 function playSound(soundName) {
     if (!gameState.get('settings.soundEffects')) return;
     
-    // TODO: Implement sound effects
     console.log(`Playing sound: ${soundName}`);
 }
 
-// Vibrate device (if supported)
 function vibrate(pattern = 100) {
     if (navigator.vibrate) {
         navigator.vibrate(pattern);
     }
 }
 
-// Check if feature is unlocked
 function isFeatureUnlocked(featureName) {
     return gameState.hasInSet('unlockedFeatures', featureName);
 }
 
-// Unlock feature
 function unlockFeature(featureName) {
     if (!isFeatureUnlocked(featureName)) {
         gameState.addToSet('unlockedFeatures', featureName);
         
-        // Show unlock notification
         showNotification({
             title: 'Feature Unlocked!',
             message: `${featureName.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())} is now available!`,
             type: 'milestone'
         });
         
-        // Update UI
         updateUI();
     }
 }
 
-// Check unlocks based on current state
 function checkUnlocks() {
     const strength = gameState.get('strength');
     const prestigeLevel = gameState.get('prestigeLevel');
     
-    // Check tier-based unlocks
     for (const tier of CONFIG.STRENGTH_TIERS) {
         if (strength >= tier.threshold) {
             for (const unlock of tier.unlocks) {
@@ -390,19 +360,16 @@ function checkUnlocks() {
         }
     }
     
-    // Check prestige-based unlocks
     if (prestigeLevel >= 10 && !isFeatureUnlocked('reality-break')) {
         unlockFeature('reality-break');
     }
     
-    // Check hidden achievement unlocks
     const hiddenCount = gameState.get('hiddenAchievements').size;
     if (hiddenCount >= 5 && !isFeatureUnlocked('dimension-shift')) {
         unlockFeature('dimension-shift');
     }
 }
 
-// Export functions for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         formatNumber,

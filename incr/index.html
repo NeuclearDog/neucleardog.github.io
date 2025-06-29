@@ -155,27 +155,90 @@
                     <button class="upgrade-btn" id="protein-shake" onclick="buyUpgrade('proteinShake')">
                         <div class="upgrade-content">
                             <div class="upgrade-title">🥤 Protein Shake</div>
-                            <div class="upgrade-cost">Cost: $<span id="protein-cost">10</span></div>
-                            <div class="upgrade-desc">+1.5 strength per training</div>
-                            <div class="upgrade-owned">Owned: <span id="protein-owned">0</span></div>
+                            <div class="upgrade-cost">Cost: $<span id="protein-shake-cost">100</span></div>
+                            <div class="upgrade-desc">+0.5 strength per training</div>
+                            <div class="upgrade-owned">Owned: <span id="protein-shake-owned">0</span></div>
                         </div>
                     </button>
                     
                     <button class="upgrade-btn" id="gym-membership" onclick="buyUpgrade('gymMembership')">
                         <div class="upgrade-content">
                             <div class="upgrade-title">🏃 Gym Membership</div>
-                            <div class="upgrade-cost">Cost: $<span id="gym-cost">100</span></div>
-                            <div class="upgrade-desc">+5.0 strength per training + idle gains</div>
-                            <div class="upgrade-owned">Owned: <span id="gym-owned">0</span></div>
+                            <div class="upgrade-cost">Cost: $<span id="gym-membership-cost">1000</span></div>
+                            <div class="upgrade-desc">+2.0 strength per training + idle gains</div>
+                            <div class="upgrade-owned">Owned: <span id="gym-membership-owned">0</span></div>
                         </div>
                     </button>
                     
                     <button class="upgrade-btn" id="personal-trainer" onclick="buyUpgrade('personalTrainer')">
                         <div class="upgrade-content">
                             <div class="upgrade-title">👨‍🏫 Personal Trainer</div>
-                            <div class="upgrade-cost">Cost: $<span id="trainer-cost">1000</span></div>
-                            <div class="upgrade-desc">+25.0 strength per training</div>
-                            <div class="upgrade-owned">Owned: <span id="trainer-owned">0</span></div>
+                            <div class="upgrade-cost">Cost: $<span id="personal-trainer-cost">10000</span></div>
+                            <div class="upgrade-desc">+10.0 strength per training</div>
+                            <div class="upgrade-owned">Owned: <span id="personal-trainer-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn" id="super-serum" onclick="buyUpgrade('superSerum')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">💉 Super Serum</div>
+                            <div class="upgrade-cost">Cost: $<span id="super-serum-cost">100000</span></div>
+                            <div class="upgrade-desc">1.5x strength multiplier</div>
+                            <div class="upgrade-owned">Owned: <span id="super-serum-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn" id="gravity-chamber" onclick="buyUpgrade('gravityChamber')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🌌 Gravity Chamber</div>
+                            <div class="upgrade-cost">Cost: $<span id="gravity-chamber-cost">1000000</span></div>
+                            <div class="upgrade-desc">5x strength multiplier</div>
+                            <div class="upgrade-owned">Owned: <span id="gravity-chamber-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn" id="quantum-enhancer" onclick="buyUpgrade('quantumEnhancer')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">⚛️ Quantum Enhancer</div>
+                            <div class="upgrade-cost">Cost: $<span id="quantum-enhancer-cost">100000000</span></div>
+                            <div class="upgrade-desc">50x strength multiplier</div>
+                            <div class="upgrade-owned">Owned: <span id="quantum-enhancer-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn legendary" id="moon-training-ground" onclick="buyUpgrade('moonTrainingGround')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🌙 Moon Training Ground</div>
+                            <div class="upgrade-cost">Cost: $<span id="moon-training-ground-cost">1000000000000</span></div>
+                            <div class="upgrade-desc">Train on the Moon itself - gravity is optional</div>
+                            <div class="upgrade-owned">Owned: <span id="moon-training-ground-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn legendary" id="city-slab-lifter" onclick="buyUpgrade('citySlabLifter')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🏙️ City Slab Lifter</div>
+                            <div class="upgrade-cost">Cost: $<span id="city-slab-lifter-cost">1000000000000000</span></div>
+                            <div class="upgrade-desc">Lift metal slabs the size of entire cities</div>
+                            <div class="upgrade-owned">Owned: <span id="city-slab-lifter-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn cosmic" id="continental-barbell" onclick="buyUpgrade('continentalBarbell')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🌍 Continental Barbell</div>
+                            <div class="upgrade-cost">Cost: $<span id="continental-barbell-cost">1000000000000000000</span></div>
+                            <div class="upgrade-desc">A barbell made from entire continents</div>
+                            <div class="upgrade-owned">Owned: <span id="continental-barbell-owned">0</span></div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn cosmic" id="planetary-dumbbell" onclick="buyUpgrade('planetaryDumbbell')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🪐 Planetary Dumbbell</div>
+                            <div class="upgrade-cost">Cost: $<span id="planetary-dumbbell-cost">1000000000000000000000</span></div>
+                            <div class="upgrade-desc">Dumbbells forged from compressed planets</div>
+                            <div class="upgrade-owned">Owned: <span id="planetary-dumbbell-owned">0</span></div>
                         </div>
                     </button>
                 </div>
@@ -184,7 +247,7 @@
                     <button class="upgrade-btn" id="energy-drink" onclick="buyConsumable('energyDrink')">
                         <div class="upgrade-content">
                             <div class="upgrade-title">⚡ Energy Drink</div>
-                            <div class="upgrade-cost">Cost: $<span id="energy-cost">50</span></div>
+                            <div class="upgrade-cost">Cost: $<span id="energy-drink-cost">50</span></div>
                             <div class="upgrade-desc">Reduce all cooldowns by 50% for 5 minutes</div>
                         </div>
                     </button>
@@ -192,8 +255,24 @@
                     <button class="upgrade-btn" id="double-xp" onclick="buyConsumable('doubleXp')">
                         <div class="upgrade-content">
                             <div class="upgrade-title">🔥 Double XP Potion</div>
-                            <div class="upgrade-cost">Cost: $<span id="double-cost">200</span></div>
+                            <div class="upgrade-cost">Cost: $<span id="double-xp-cost">200</span></div>
                             <div class="upgrade-desc">2x strength gains for 10 minutes</div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn" id="triple-xp" onclick="buyConsumable('tripleXp')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">🔥🔥 Triple XP Potion</div>
+                            <div class="upgrade-cost">Cost: $<span id="triple-xp-cost">1000</span></div>
+                            <div class="upgrade-desc">3x strength gains for 5 minutes</div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn legendary" id="mega-boost" onclick="buyConsumable('megaBoost')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">💥 Mega Boost</div>
+                            <div class="upgrade-cost">Cost: $<span id="mega-boost-cost">5000</span></div>
+                            <div class="upgrade-desc">10x strength gains for 1 minute</div>
                         </div>
                     </button>
                 </div>
@@ -202,7 +281,7 @@
                     <button class="upgrade-btn gem-upgrade" id="time-warp" onclick="buyGemUpgrade('timeWarp')">
                         <div class="upgrade-content">
                             <div class="upgrade-title">⏰ Time Warp</div>
-                            <div class="upgrade-cost">Cost: <span id="warp-cost">10</span> 💎</div>
+                            <div class="upgrade-cost">Cost: <span id="time-warp-cost">10</span> 💎</div>
                             <div class="upgrade-desc">Skip all cooldowns instantly</div>
                         </div>
                     </button>
@@ -210,8 +289,24 @@
                     <button class="upgrade-btn gem-upgrade" id="strength-boost" onclick="buyGemUpgrade('strengthBoost')">
                         <div class="upgrade-content">
                             <div class="upgrade-title">💪 Strength Boost</div>
-                            <div class="upgrade-cost">Cost: <span id="boost-cost">25</span> 💎</div>
+                            <div class="upgrade-cost">Cost: <span id="strength-boost-cost">25</span> 💎</div>
                             <div class="upgrade-desc">Permanent +10% strength multiplier</div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn gem-upgrade" id="money-multiplier" onclick="buyGemUpgrade('moneyMultiplier')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">💰 Money Multiplier</div>
+                            <div class="upgrade-cost">Cost: <span id="money-multiplier-cost">50</span> 💎</div>
+                            <div class="upgrade-desc">Permanent +50% money gains</div>
+                        </div>
+                    </button>
+                    
+                    <button class="upgrade-btn gem-upgrade" id="gem-generator" onclick="buyGemUpgrade('gemGenerator')">
+                        <div class="upgrade-content">
+                            <div class="upgrade-title">💎 Gem Generator</div>
+                            <div class="upgrade-cost">Cost: <span id="gem-generator-cost">100</span> 💎</div>
+                            <div class="upgrade-desc">Generate 1 gem per hour automatically</div>
                         </div>
                     </button>
                 </div>

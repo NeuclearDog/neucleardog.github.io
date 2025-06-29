@@ -1,58 +1,42 @@
-// Game Configuration
 const CONFIG = {
-    // Version
     VERSION: '2.0.0',
-    
-    // Save/Load
     SAVE_KEY: 'strengthAscension_v2',
-    AUTO_SAVE_INTERVAL: 10000, // 10 seconds
-    
-    // Training Cooldowns (in milliseconds) - Made much harsher
+    AUTO_SAVE_INTERVAL: 10000,
     COOLDOWNS: {
-        basic: 30000, // 30 seconds
-        intense: 600000, // 10 minutes
-        extreme: 1800000, // 30 minutes
-        legendary: 7200000, // 2 hours
-        cosmic: 21600000, // 6 hours
-        fight: 3600000, // 1 hour for fights
+        basic: 30000,
+        intense: 600000,
+        extreme: 1800000,
+        legendary: 7200000,
+        cosmic: 21600000,
+        fight: 3600000,
     },
-    
-    // Training Base Values - Reduced for longer gameplay
     TRAINING_BASE: {
         basic: 0.1,
         intense: 0.5,
         extreme: 2.5,
         legendary: 100.0,
         cosmic: 10000.0,
-        fight: 50.0, // Base fight strength gain
+        fight: 50.0,
     },
-    
-    // Money Generation - Reduced significantly
-    MONEY_PER_STRENGTH: 0.01, // $0.01 per strength point gained
-    
-    // Gem Generation - Much harder to get
+    MONEY_PER_STRENGTH: 0.01,
     GEMS_PER_PRESTIGE: 1,
     GEMS_PER_HIDDEN_ACHIEVEMENT: 3,
-    
-    // Strength Tiers
     STRENGTH_TIERS: [
-        { threshold: 1, name: "Weakling", emoji: "😴", unlocks: [] },
-        { threshold: 10, name: "Beginner", emoji: "🤔", unlocks: [] },
-        { threshold: 100, name: "Novice", emoji: "💪", unlocks: ['alien-character'] },
-        { threshold: 1000, name: "Amateur", emoji: "🦾", unlocks: ['legendary-training'] },
-        { threshold: 10000, name: "Strong", emoji: "⚡", unlocks: [] },
-        { threshold: 100000, name: "Powerful", emoji: "🔥", unlocks: ['robot-character'] },
-        { threshold: 1000000, name: "Superhuman", emoji: "🦸", unlocks: ['cosmic-training'] },
-        { threshold: 10000000, name: "Legendary", emoji: "🌟", unlocks: ['hidden-features'] },
-        { threshold: 100000000, name: "Mythical", emoji: "🔮", unlocks: [] },
-        { threshold: 1000000000, name: "Godlike", emoji: "👑", unlocks: [] },
-        { threshold: 10000000000, name: "Cosmic", emoji: "🌌", unlocks: [] },
-        { threshold: 100000000000, name: "Universal", emoji: "🌠", unlocks: [] },
-        { threshold: 1000000000000, name: "Multiversal", emoji: "🌀", unlocks: [] },
-        { threshold: 5.972e24, name: "EARTH LIFTER", emoji: "🌍", unlocks: ['earth-challenge'] }
+        { threshold: 1, name: "Weakling", emoji: "😴", unlocks: [], autoMoney: 0 },
+        { threshold: 10, name: "Beginner", emoji: "🤔", unlocks: [], autoMoney: 5 },
+        { threshold: 100, name: "Novice", emoji: "💪", unlocks: ['alien-character'], autoMoney: 25 },
+        { threshold: 1000, name: "Amateur", emoji: "🦾", unlocks: ['legendary-training'], autoMoney: 100 },
+        { threshold: 10000, name: "Strong", emoji: "⚡", unlocks: [], autoMoney: 500 },
+        { threshold: 100000, name: "Powerful", emoji: "🔥", unlocks: ['robot-character'], autoMoney: 2500 },
+        { threshold: 1000000, name: "Superhuman", emoji: "🦸", unlocks: ['cosmic-training'], autoMoney: 10000 },
+        { threshold: 10000000, name: "Legendary", emoji: "🌟", unlocks: ['hidden-features'], autoMoney: 50000 },
+        { threshold: 100000000, name: "Mythical", emoji: "🔮", unlocks: [], autoMoney: 250000 },
+        { threshold: 1000000000, name: "Godlike", emoji: "👑", unlocks: [], autoMoney: 1000000 },
+        { threshold: 10000000000, name: "Cosmic", emoji: "🌌", unlocks: [], autoMoney: 5000000 },
+        { threshold: 100000000000, name: "Universal", emoji: "🌠", unlocks: [], autoMoney: 25000000 },
+        { threshold: 1000000000000, name: "Multiversal", emoji: "🌀", unlocks: [], autoMoney: 100000000 },
+        { threshold: 5.972e24, name: "EARTH LIFTER", emoji: "🌍", unlocks: ['earth-challenge'], autoMoney: 1000000000 }
     ],
-    
-    // Equipment Costs and Effects - Much more expensive
     EQUIPMENT: {
         proteinShake: {
             baseCost: 100,
@@ -76,22 +60,21 @@ const CONFIG = {
         superSerum: {
             baseCost: 100000,
             costMultiplier: 20.0,
-            effect: 1.5, // Multiplier
+            effect: 1.5,
             maxLevel: 5
         },
         gravityChamber: {
             baseCost: 1000000,
             costMultiplier: 200.0,
-            effect: 5.0, // Multiplier
+            effect: 5.0,
             maxLevel: 3
         },
         quantumEnhancer: {
             baseCost: 100000000,
             costMultiplier: 2000.0,
-            effect: 50.0, // Multiplier
+            effect: 50.0,
             maxLevel: 2
         },
-        // Absurd Equipment
         moonTrainingGround: {
             baseCost: 1e12,
             costMultiplier: 10000.0,
@@ -121,36 +104,32 @@ const CONFIG = {
             description: "Dumbbells forged from compressed planets"
         }
     },
-    
-    // Consumables
     CONSUMABLES: {
         energyDrink: {
             cost: 50,
             effect: 'cooldown_reduction',
-            value: 0.5, // 50% reduction
-            duration: 300000 // 5 minutes
+            value: 0.5,
+            duration: 300000
         },
         doubleXp: {
             cost: 200,
             effect: 'strength_multiplier',
             value: 2.0,
-            duration: 600000 // 10 minutes
+            duration: 600000
         },
         tripleXp: {
             cost: 1000,
             effect: 'strength_multiplier',
             value: 3.0,
-            duration: 300000 // 5 minutes
+            duration: 300000
         },
         megaBoost: {
             cost: 5000,
             effect: 'strength_multiplier',
             value: 10.0,
-            duration: 60000 // 1 minute
+            duration: 60000
         }
     },
-    
-    // Gem Upgrades
     GEM_UPGRADES: {
         timeWarp: {
             cost: 10,
@@ -159,31 +138,27 @@ const CONFIG = {
         strengthBoost: {
             baseCost: 25,
             costMultiplier: 2.0,
-            effect: 0.1, // +10% per level
+            effect: 0.1,
             maxLevel: 20
         },
         moneyMultiplier: {
             baseCost: 50,
             costMultiplier: 3.0,
-            effect: 0.5, // +50% per level
+            effect: 0.5,
             maxLevel: 10
         },
         gemGenerator: {
             baseCost: 100,
             costMultiplier: 5.0,
-            effect: 1, // +1 gem per hour per level
+            effect: 1,
             maxLevel: 5
         }
     },
-    
-    // Prestige Requirements - Much harder
     PRESTIGE: {
-        minStrength: 10000000, // 10 million instead of 1 million
+        minStrength: 10000000,
         baseBonus: 0.5,
         bonusPerLevel: 0.2
     },
-    
-    // Hidden Features
     HIDDEN_UNLOCKS: {
         realityBreak: {
             requirement: 'prestige_10',
@@ -198,22 +173,16 @@ const CONFIG = {
             cost: 1000000000000000
         }
     },
-    
-    // Particle Effects
     PARTICLES: {
         strength: { color: '#ffd93d', count: 5, duration: 2000 },
         money: { color: '#4ecdc4', count: 3, duration: 2500 },
         gem: { color: '#9c27b0', count: 2, duration: 3000 },
         cosmic: { color: '#8a2be2', count: 10, duration: 4000 }
     },
-    
-    // Notification Settings
     NOTIFICATIONS: {
         duration: 4000,
         maxVisible: 5
     },
-    
-    // Statistics Tracking
     STATS_TO_TRACK: [
         'totalStrengthGained',
         'totalMoneyEarned',
@@ -230,8 +199,6 @@ const CONFIG = {
         'fightsLost',
         'strongestOpponentDefeated'
     ],
-    
-    // Fighting System
     FIGHT_OPPONENTS: [
         {
             id: 'weakling',
@@ -380,10 +347,8 @@ const CONFIG = {
     ]
 };
 
-// Earth's mass in kg
 const EARTH_MASS = 5.972e24;
 
-// Character configurations
 const CHARACTERS = {
     boy: { emoji: '👦', name: 'Boy', unlocked: true },
     girl: { emoji: '👧', name: 'Girl', unlocked: true },
@@ -391,7 +356,6 @@ const CHARACTERS = {
     robot: { emoji: '🤖', name: 'Robot', unlocked: false, requirement: 100000 }
 };
 
-// Theme configurations
 const THEMES = {
     dark: { name: 'Dark', icon: '🌙' },
     light: { name: 'Light', icon: '☀️' },
@@ -401,7 +365,6 @@ const THEMES = {
     space: { name: 'Space', icon: '🌌' }
 };
 
-// Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { CONFIG, EARTH_MASS, CHARACTERS, THEMES };
 }

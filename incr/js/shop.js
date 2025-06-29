@@ -1,19 +1,13 @@
-// Shop System
-
-// Current shop tab
 let currentShopTab = 'equipment';
 
-// Switch shop tab
 function switchShopTab(tab) {
     currentShopTab = tab;
     
-    // Update tab buttons
     document.querySelectorAll('.shop-tab').forEach(btn => {
         btn.classList.remove('active');
     });
     document.querySelector(`[onclick="switchShopTab('${tab}')"]`).classList.add('active');
     
-    // Show/hide shop content
     document.querySelectorAll('.shop-content').forEach(content => {
         content.classList.add('hidden');
     });
@@ -22,14 +16,12 @@ function switchShopTab(tab) {
     updateShopDisplay();
 }
 
-// Buy equipment upgrade
 function buyUpgrade(upgradeType) {
     const currentLevel = gameState.get(`equipment.${upgradeType}`);
     const cost = calculateEquipmentCost(upgradeType, currentLevel);
     const money = gameState.get('money');
     const config = CONFIG.EQUIPMENT[upgradeType];
     
-    // Check if at max level
     if (config.maxLevel && currentLevel >= config.maxLevel) {
         showNotification({
             title: 'Max Level Reached',
@@ -39,7 +31,6 @@ function buyUpgrade(upgradeType) {
         return;
     }
     
-    // Check if can afford
     if (money < cost) {
         showNotification({
             title: 'Not Enough Money',
@@ -49,13 +40,11 @@ function buyUpgrade(upgradeType) {
         return;
     }
     
-    // Purchase upgrade
     gameState.add('money', -cost);
     gameState.add(`equipment.${upgradeType}`, 1);
     gameState.add('statistics.equipmentPurchased', 1);
     
-    // Visual effects
-    const button = document.getElementById(upgradeType);
+    const button = document.getElementById(upgradeType.replace(/([A-Z])/g, '-$1').toLowerCase());
     if (button) {
         const pos = getElementPosition(button);
         createParticles('money', pos.x, pos.y, 3);
@@ -66,27 +55,22 @@ function buyUpgrade(upgradeType) {
         }, 200);
     }
     
-    // Sound and haptic feedback
     playSound('purchase');
     vibrate(100);
     
-    // Show purchase notification
     showNotification({
         title: 'Upgrade Purchased!',
         message: `${upgradeType.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} level ${currentLevel + 1}`,
         type: 'success'
     });
     
-    // Update displays
     updateShopDisplay();
     updateStatsDisplay();
     updateTrainingDisplay();
     
-    // Check achievements
     checkAchievements();
 }
 
-// Buy consumable
 function buyConsumable(consumableType) {
     const config = CONFIG.CONSUMABLES[consumableType];
     const money = gameState.get('money');
@@ -100,13 +84,10 @@ function buyConsumable(consumableType) {
         return;
     }
     
-    // Purchase consumable
     gameState.add('money', -config.cost);
     
-    // Apply effect
     const effectId = gameState.addActiveEffect(config.effect, config.value, config.duration);
     
-    // Visual effects
     const button = document.getElementById(consumableType.replace(/([A-Z])/g, '-$1').toLowerCase());
     if (button) {
         const pos = getElementPosition(button);
@@ -118,11 +99,9 @@ function buyConsumable(consumableType) {
         }, 200);
     }
     
-    // Sound and haptic feedback
     playSound('consumable');
     vibrate(150);
     
-    // Show effect notification
     showNotification({
         title: 'Consumable Used!',
         message: `${consumableType.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} active for ${formatTime(config.duration)}`,
@@ -133,14 +112,12 @@ function buyConsumable(consumableType) {
     updateShopDisplay();
 }
 
-// Buy gem upgrade
 function buyGemUpgrade(upgradeType) {
     const currentLevel = gameState.get(`gemUpgrades.${upgradeType}`);
     const cost = calculateGemUpgradeCost(upgradeType, currentLevel);
     const gems = gameState.get('gems');
     const config = CONFIG.GEM_UPGRADES[upgradeType];
     
-    // Check if at max level
     if (config.maxLevel && currentLevel >= config.maxLevel) {
         showNotification({
             title: 'Max Level Reached',
@@ -150,7 +127,6 @@ function buyGemUpgrade(upgradeType) {
         return;
     }
     
-    // Check if can afford
     if (gems < cost) {
         showNotification({
             title: 'Not Enough Gems',
@@ -160,9 +136,7 @@ function buyGemUpgrade(upgradeType) {
         return;
     }
     
-    // Special handling for one-time purchases
     if (upgradeType === 'timeWarp') {
-        // Skip all cooldowns
         const cooldowns = gameState.get('cooldowns');
         Object.keys(cooldowns).forEach(type => {
             cooldowns[type] = 0;
@@ -181,11 +155,9 @@ function buyGemUpgrade(upgradeType) {
         return;
     }
     
-    // Purchase upgrade
     gameState.add('gems', -cost);
     gameState.add(`gemUpgrades.${upgradeType}`, 1);
     
-    // Visual effects
     const button = document.getElementById(upgradeType.replace(/([A-Z])/g, '-$1').toLowerCase());
     if (button) {
         const pos = getElementPosition(button);
@@ -197,53 +169,45 @@ function buyGemUpgrade(upgradeType) {
         }, 200);
     }
     
-    // Sound and haptic feedback
     playSound('gem_purchase');
     vibrate([100, 50, 100]);
     
-    // Show purchase notification
     showNotification({
         title: 'Gem Upgrade Purchased!',
         message: `${upgradeType.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} level ${currentLevel + 1}`,
         type: 'gem'
     });
     
-    // Update displays
     updateShopDisplay();
     updateStatsDisplay();
     updateTrainingDisplay();
 }
 
-// Update shop display
 function updateShopDisplay() {
     updateEquipmentShop();
     updateConsumablesShop();
     updateSpecialShop();
 }
 
-// Update equipment shop
 function updateEquipmentShop() {
     const money = gameState.get('money');
     const equipment = gameState.get('equipment');
     
     Object.keys(CONFIG.EQUIPMENT).forEach(equipmentType => {
-        const currentLevel = equipment[equipmentType];
+        const currentLevel = equipment[equipmentType] || 0;
         const cost = calculateEquipmentCost(equipmentType, currentLevel);
         const config = CONFIG.EQUIPMENT[equipmentType];
         
-        // Update cost display
         const costElement = document.getElementById(equipmentType.replace(/([A-Z])/g, '-$1').toLowerCase() + '-cost');
         if (costElement) {
             costElement.textContent = formatNumber(cost);
         }
         
-        // Update owned display
         const ownedElement = document.getElementById(equipmentType.replace(/([A-Z])/g, '-$1').toLowerCase() + '-owned');
         if (ownedElement) {
             ownedElement.textContent = currentLevel;
         }
         
-        // Update button state
         const button = document.getElementById(equipmentType.replace(/([A-Z])/g, '-$1').toLowerCase());
         if (button) {
             const canAfford = money >= cost;
@@ -251,14 +215,13 @@ function updateEquipmentShop() {
             
             button.disabled = !canAfford || atMaxLevel;
             
-            if (atMaxLevel) {
+            if (atMaxLevel && button.querySelector('.upgrade-cost')) {
                 button.querySelector('.upgrade-cost').textContent = 'MAX LEVEL';
             }
         }
     });
 }
 
-// Update consumables shop
 function updateConsumablesShop() {
     const money = gameState.get('money');
     
@@ -266,13 +229,11 @@ function updateConsumablesShop() {
         const config = CONFIG.CONSUMABLES[consumableType];
         const elementId = consumableType.replace(/([A-Z])/g, '-$1').toLowerCase();
         
-        // Update cost display
         const costElement = document.getElementById(elementId + '-cost');
         if (costElement) {
             costElement.textContent = formatNumber(config.cost);
         }
         
-        // Update button state
         const button = document.getElementById(elementId);
         if (button) {
             button.disabled = money < config.cost;
@@ -280,24 +241,21 @@ function updateConsumablesShop() {
     });
 }
 
-// Update special shop
 function updateSpecialShop() {
     const gems = gameState.get('gems');
     const gemUpgrades = gameState.get('gemUpgrades');
     
     Object.keys(CONFIG.GEM_UPGRADES).forEach(upgradeType => {
-        const currentLevel = gemUpgrades[upgradeType];
+        const currentLevel = gemUpgrades[upgradeType] || 0;
         const cost = calculateGemUpgradeCost(upgradeType, currentLevel);
         const config = CONFIG.GEM_UPGRADES[upgradeType];
         const elementId = upgradeType.replace(/([A-Z])/g, '-$1').toLowerCase();
         
-        // Update cost display
         const costElement = document.getElementById(elementId + '-cost');
         if (costElement) {
             costElement.textContent = formatNumber(cost);
         }
         
-        // Update button state
         const button = document.getElementById(elementId);
         if (button) {
             const canAfford = gems >= cost;
@@ -312,15 +270,12 @@ function updateSpecialShop() {
     });
 }
 
-// Initialize shop system
 function initShop() {
     updateShopDisplay();
     
-    // Update shop display periodically
     setInterval(updateShopDisplay, 1000);
 }
 
-// Export functions
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         switchShopTab,

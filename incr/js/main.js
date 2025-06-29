@@ -1,17 +1,14 @@
-// Main Game Controller
+let lastTierIndex = 0;
+let fightStreak = 0;
 
-// Game initialization
 function initGame() {
     console.log('Initializing Strength Ascension v' + CONFIG.VERSION);
     
-    // Show loading screen
     showLoadingScreen();
     
-    // Load game state
     gameState.load();
     gameState.startUpdateLoop();
     
-    // Initialize all systems
     initThemes();
     initTraining();
     initFighting();
@@ -22,23 +19,19 @@ function initGame() {
     initStatistics();
     initHiddenFeatures();
     
-    // Set up auto-save
     setInterval(() => {
         if (gameState.get('settings.autoSave')) {
             gameState.save();
         }
     }, CONFIG.AUTO_SAVE_INTERVAL);
     
-    // Set up UI updates
     setInterval(updateUI, 100);
+    setInterval(checkTierProgression, 500);
     
-    // Initial UI update
     updateUI();
     
-    // Hide loading screen after initialization
     setTimeout(hideLoadingScreen, 2000);
     
-    // Welcome message for new players
     if (gameState.get('strength') === 1.0 && gameState.get('statistics.totalTrainingClicks') === 0) {
         setTimeout(() => {
             showNotification({
@@ -53,7 +46,41 @@ function initGame() {
     console.log('Game initialized successfully');
 }
 
-// Show loading screen
+function checkTierProgression() {
+    const currentStrength = gameState.get('strength');
+    const currentTierIndex = getCurrentTierIndex();
+    
+    if (currentTierIndex > lastTierIndex) {
+        const tier = CONFIG.STRENGTH_TIERS[currentTierIndex];
+        if (tier.autoMoney > 0) {
+            gameState.add('money', tier.autoMoney);
+            gameState.add('statistics.totalMoneyEarned', tier.autoMoney);
+            
+            showNotification({
+                title: `${tier.emoji} ${tier.name} Achieved!`,
+                message: `Auto-collected ${formatMoney(tier.autoMoney)}!\nNew tier unlocked!`,
+                type: 'milestone',
+                duration: 5000
+            });
+            
+            createParticles('money', window.innerWidth / 2, window.innerHeight / 2, 8);
+            playSound('tier_up');
+            vibrate([200, 100, 200]);
+        }
+        lastTierIndex = currentTierIndex;
+    }
+}
+
+function getCurrentTierIndex() {
+    const strength = gameState.get('strength');
+    for (let i = CONFIG.STRENGTH_TIERS.length - 1; i >= 0; i--) {
+        if (strength >= CONFIG.STRENGTH_TIERS[i].threshold) {
+            return i;
+        }
+    }
+    return 0;
+}
+
 function showLoadingScreen() {
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
@@ -61,7 +88,6 @@ function showLoadingScreen() {
     }
 }
 
-// Hide loading screen
 function hideLoadingScreen() {
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
@@ -72,7 +98,6 @@ function hideLoadingScreen() {
     }
 }
 
-// Main UI update function
 function updateUI() {
     updateStatsDisplay();
     updateTrainingDisplay();
@@ -82,7 +107,6 @@ function updateUI() {
     checkUnlocks();
 }
 
-// Update stats display
 function updateStatsDisplay() {
     const strength = gameState.get('strength');
     const money = gameState.get('money');
@@ -91,12 +115,10 @@ function updateStatsDisplay() {
     const multiplier = calculateStrengthMultiplier();
     const fightsWon = gameState.get('statistics.fightsWon') || 0;
     
-    // Update strength display
     const strengthDisplay = document.getElementById('strength-display');
     if (strengthDisplay) {
         strengthDisplay.textContent = formatNumber(strength) + ' kg';
         
-        // Add animation for large gains
         if (strength > gameState.get('statistics.maxStrengthReached')) {
             strengthDisplay.style.animation = 'strength-surge 0.5s ease-out';
             setTimeout(() => {
@@ -105,43 +127,36 @@ function updateStatsDisplay() {
         }
     }
     
-    // Update money display
     const moneyDisplay = document.getElementById('money-display');
     if (moneyDisplay) {
         moneyDisplay.textContent = formatMoney(money);
     }
     
-    // Update gems display
     const gemsDisplay = document.getElementById('gems-display');
     if (gemsDisplay) {
         gemsDisplay.textContent = formatNumber(gems);
     }
     
-    // Update prestige level
     const prestigeLevelDisplay = document.getElementById('prestige-level');
     if (prestigeLevelDisplay) {
         prestigeLevelDisplay.textContent = prestigeLevel;
     }
     
-    // Update strength multiplier
     const multiplierDisplay = document.getElementById('strength-multiplier');
     if (multiplierDisplay) {
         multiplierDisplay.textContent = formatNumber(multiplier) + 'x';
     }
     
-    // Update fights won
     const fightsWonDisplay = document.getElementById('fights-won');
     if (fightsWonDisplay) {
         fightsWonDisplay.textContent = formatNumber(fightsWon);
     }
     
-    // Update win streak
     const winStreakDisplay = document.getElementById('win-streak');
     if (winStreakDisplay) {
         winStreakDisplay.textContent = formatNumber(fightStreak || 0);
     }
     
-    // Update strength tier
     const tier = getCurrentTier();
     const tierDisplay = document.getElementById('strength-tier');
     if (tierDisplay) {
@@ -149,7 +164,6 @@ function updateStatsDisplay() {
     }
 }
 
-// Update progress bar
 function updateProgressBar() {
     const strength = gameState.get('strength');
     const nextTier = getNextTier();
@@ -166,7 +180,6 @@ function updateProgressBar() {
     }
 }
 
-// Update milestone display
 function updateMilestone() {
     const nextTier = getNextTier();
     const milestoneDisplay = document.getElementById('current-goal');
@@ -181,7 +194,6 @@ function updateMilestone() {
     }
 }
 
-// Character selection
 function selectCharacter(character) {
     if (!gameState.hasInSet('unlockedCharacters', character)) {
         showNotification({
@@ -194,19 +206,16 @@ function selectCharacter(character) {
     
     gameState.set('character', character);
     
-    // Update character avatar
     const avatar = document.getElementById('character-avatar');
     if (avatar) {
         avatar.textContent = CHARACTERS[character].emoji;
     }
     
-    // Update button styles
     document.querySelectorAll('.character-btn').forEach(btn => {
         btn.classList.remove('selected');
     });
     document.getElementById(character + '-btn').classList.add('selected');
     
-    // Show selection notification
     showNotification({
         title: 'Character Selected',
         message: `You are now playing as ${CHARACTERS[character].name}!`,
@@ -216,9 +225,7 @@ function selectCharacter(character) {
     gameState.save();
 }
 
-// Keyboard shortcuts
 document.addEventListener('keydown', (event) => {
-    // Don't trigger shortcuts when typing in inputs
     if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
         return;
     }
@@ -250,29 +257,22 @@ document.addEventListener('keydown', (event) => {
                 }
             }
             break;
-        case 'escape':
-            // Close any open modals or menus
-            break;
     }
 });
 
-// Window events
 window.addEventListener('beforeunload', () => {
     gameState.save();
     gameState.stopUpdateLoop();
 });
 
 window.addEventListener('focus', () => {
-    // Resume game updates
     gameState.startUpdateLoop();
 });
 
 window.addEventListener('blur', () => {
-    // Save game when losing focus
     gameState.save();
 });
 
-// Visibility change handling for mobile
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         gameState.save();
@@ -282,11 +282,9 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Error handling
 window.addEventListener('error', (event) => {
     console.error('Game error:', event.error);
     
-    // Try to save game state
     try {
         gameState.save();
     } catch (e) {
@@ -294,12 +292,10 @@ window.addEventListener('error', (event) => {
     }
 });
 
-// Unhandled promise rejection handling
 window.addEventListener('unhandledrejection', (event) => {
     console.error('Unhandled promise rejection:', event.reason);
 });
 
-// Performance monitoring
 let lastFrameTime = performance.now();
 let frameCount = 0;
 let fps = 60;
@@ -313,7 +309,6 @@ function updateFPS() {
         frameCount = 0;
         lastFrameTime = now;
         
-        // Log performance issues
         if (fps < 30) {
             console.warn('Low FPS detected:', fps);
         }
@@ -322,10 +317,8 @@ function updateFPS() {
     requestAnimationFrame(updateFPS);
 }
 
-// Start FPS monitoring
 requestAnimationFrame(updateFPS);
 
-// Debug functions (only in development)
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     window.debugGame = {
         addStrength: (amount) => gameState.add('strength', amount),
@@ -366,14 +359,12 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
     console.log('Debug functions available: window.debugGame');
 }
 
-// Initialize game when DOM is loaded
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initGame);
 } else {
     initGame();
 }
 
-// Export main functions
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         initGame,
