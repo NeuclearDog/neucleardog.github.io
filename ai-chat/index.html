@@ -17,10 +17,11 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             background: white;
+            overflow: hidden;
         }
         .header {
             background: white;
@@ -33,16 +34,16 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
-            height: 60px;
+            height: 50px;
         }
         .header h1 { 
-            font-size: 1.5rem; 
+            font-size: 1.3rem; 
             font-weight: 400; 
             margin: 0;
             color: #333;
         }
         .header p { 
-            font-size: 0.9rem; 
+            font-size: 0.8rem; 
             color: #666;
             margin: 0;
         }
@@ -54,18 +55,18 @@
         }
         
         .header-btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: white;
             color: #333;
             border: 1px solid #e0e0e0;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 400;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
-            min-width: 100px;
+            gap: 6px;
+            min-width: 90px;
             justify-content: center;
         }
         
@@ -92,13 +93,13 @@
         }
         .settings-panel {
             background: white;
-            padding: 20px;
+            padding: 12px 20px;
             border-bottom: 1px solid #e0e0e0;
         }
         .settings-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
             align-items: end;
         }
         .setting-group {
@@ -108,18 +109,18 @@
         }
         .setting-group label {
             font-weight: 400;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #333;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .setting-group select,
         .setting-group input {
-            padding: 14px 18px;
+            padding: 10px 14px;
             border: 1px solid #e0e0e0;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.2s;
             background: white;
-            min-height: 50px;
+            min-height: 40px;
         }
         .setting-group select:focus,
         .setting-group input:focus {
@@ -132,23 +133,22 @@
         }
         .chat-messages {
             flex: 1;
-            padding: 20px;
+            padding: 15px;
             overflow-y: auto;
             background: white;
-            min-height: 300px;
-            max-height: 60vh;
+            min-height: 200px;
         }
         .message {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: fadeIn 0.3s ease-in;
         }
         .message.user { text-align: right; }
         .message-content {
             display: inline-block;
             max-width: 70%;
-            padding: 15px 20px;
+            padding: 12px 16px;
             word-wrap: break-word;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .message.user .message-content {
             background: #333;
@@ -184,13 +184,13 @@
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
         .input-container {
-            padding: 25px;
+            padding: 15px 20px;
             background: white;
             border-top: 1px solid #e0e0e0;
         }
         .input-wrapper {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: flex-end;
         }
         .input-group {
@@ -200,17 +200,17 @@
         }
         .input-group label {
             font-weight: 400;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #333;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .message-input {
-            padding: 16px 20px;
+            padding: 12px 16px;
             border: 1px solid #e0e0e0;
-            font-size: 1rem;
+            font-size: 0.95rem;
             resize: vertical;
-            min-height: 55px;
-            max-height: 150px;
+            min-height: 45px;
+            max-height: 120px;
             font-family: inherit;
             transition: border 0.2s;
             background: white;
@@ -234,16 +234,16 @@
             border-color: #333;
         }
         .send-button {
-            padding: 14px 28px;
+            padding: 12px 24px;
             background: #333;
             color: white;
             border: 1px solid #333;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 400;
             cursor: pointer;
             transition: all 0.2s;
-            min-width: 120px;
-            min-height: 50px;
+            min-width: 100px;
+            min-height: 45px;
         }
         .send-button:hover {
             background: #555;
@@ -255,15 +255,15 @@
             cursor: not-allowed;
         }
         .clear-button {
-            padding: 14px 24px;
+            padding: 12px 20px;
             background: white;
             color: #333;
             border: 1px solid #e0e0e0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 400;
             cursor: pointer;
             transition: all 0.2s;
-            min-height: 50px;
+            min-height: 45px;
         }
         .clear-button:hover { 
             background: #f5f5f5;
@@ -297,12 +297,12 @@
             background: white;
             border-bottom: 1px solid #e0e0e0;
             overflow-x: auto;
-            height: 40px;
+            height: 35px;
             align-items: flex-end;
         }
         
         .dialog-tab {
-            padding: 12px 24px 16px 24px;
+            padding: 8px 20px 12px 20px;
             background: #f5f5f5;
             border: 1px solid #e0e0e0;
             border-bottom: none;
@@ -311,12 +311,12 @@
             transition: all 0.2s;
             position: relative;
             margin-right: 1px;
-            min-width: 140px;
-            min-height: 40px;
+            min-width: 120px;
+            min-height: 35px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 400;
             color: #666;
         }
@@ -364,21 +364,21 @@
         }
         
         .add-dialog-btn {
-            padding: 10px 20px 12px 20px;
+            padding: 8px 16px 12px 16px;
             background: #333;
             color: white;
             border: 1px solid #333;
             border-bottom: none;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 400;
             transition: all 0.2s;
             margin-left: 1px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 50px;
-            min-height: 40px;
+            min-width: 45px;
+            min-height: 35px;
         }
         
         .add-dialog-btn:hover {
@@ -504,22 +504,22 @@
         /* Formatting toolbar */
         .formatting-toolbar {
             display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: 4px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
         }
         
         .format-btn {
-            padding: 8px 16px;
+            padding: 6px 12px;
             background: white;
             border: 1px solid #e0e0e0;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
-            min-width: 80px;
+            gap: 4px;
+            min-width: 70px;
             justify-content: center;
         }
         
@@ -538,7 +538,7 @@
         .context-panel {
             background: white;
             border-top: 1px solid #e0e0e0;
-            padding: 15px;
+            padding: 10px 15px;
             display: none;
         }
         
@@ -548,21 +548,21 @@
         
         .context-controls {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
         
         .context-toggle {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: #333;
             color: white;
             border: 1px solid #333;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.2s;
-            min-width: 120px;
-            min-height: 40px;
+            min-width: 100px;
+            min-height: 35px;
         }
         
         .context-toggle:hover {
@@ -643,66 +643,310 @@
             color: white;
             border-color: #333;
         }
+        /* Responsive Design - Auto-adjust to screen size */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 95%;
+            }
+            .settings-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            .header-btn {
+                min-width: 90px;
+                padding: 8px 16px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                max-width: 98%;
+            }
+            .chat-messages {
+                max-height: 45vh;
+            }
+            .message-content {
+                max-width: 85%;
+            }
+            .dialog-tab {
+                min-width: 110px;
+                padding: 8px 16px 12px 16px;
+            }
+            .formatting-toolbar {
+                gap: 3px;
+            }
+            .format-btn {
+                min-width: 65px;
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .container { 
                 max-width: 100%;
                 margin: 0;
             }
             .header-content {
-                padding: 0 15px;
-                height: 50px;
+                padding: 0 12px;
+                height: auto;
+                min-height: 45px;
                 flex-direction: column;
-                gap: 5px;
+                gap: 6px;
             }
             .header h1 { 
-                font-size: 1.2rem; 
+                font-size: 1.1rem; 
                 text-align: center;
             }
             .header p { 
-                font-size: 0.8rem;
+                font-size: 0.75rem;
                 text-align: center;
             }
             .header-actions {
-                gap: 8px;
+                gap: 6px;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             .header-btn {
                 padding: 6px 12px;
-                font-size: 0.8rem;
+                font-size: 0.75rem;
+                min-width: 70px;
             }
             .settings-grid { 
                 grid-template-columns: 1fr; 
-                gap: 15px;
+                gap: 12px;
+            }
+            .settings-panel {
+                padding: 10px 15px;
             }
             .dialog-tabs {
-                height: 40px;
+                height: auto;
+                min-height: 35px;
             }
             .dialog-tab {
-                padding: 6px 15px 10px 15px;
-                min-width: 100px;
-                font-size: 0.8rem;
+                padding: 6px 12px 10px 12px;
+                min-width: 90px;
+                font-size: 0.75rem;
+                min-height: 30px;
+            }
+            .add-dialog-btn {
+                padding: 6px 12px 10px 12px;
+                min-width: 40px;
+                min-height: 30px;
+            }
+            .chat-messages {
+                max-height: 40vh;
+                padding: 10px;
+            }
+            .message-content { 
+                max-width: 90%; 
+            }
+            .input-container {
+                padding: 12px 15px;
+            }
+            .input-wrapper { 
+                flex-direction: column; 
+                gap: 10px;
+            }
+            .button-group { 
+                justify-content: center;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .send-button, .clear-button {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+                min-height: 40px;
+            }
+            .context-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .context-toggle {
+                min-width: 90px;
+                padding: 6px 12px;
+                min-height: 30px;
+            }
+            .formatting-toolbar {
+                gap: 2px;
+                padding: 8px;
+            }
+            .format-btn {
+                min-width: 55px;
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 10px;
+            }
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            .header p {
+                font-size: 0.75rem;
+            }
+            .header-btn {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+                min-width: 70px;
+            }
+            .settings-panel {
+                padding: 10px;
+            }
+            .dialog-tab {
+                padding: 6px 12px 10px 12px;
+                min-width: 80px;
+                font-size: 0.75rem;
             }
             .add-dialog-btn {
                 padding: 6px 12px 10px 12px;
                 min-width: 40px;
             }
-            .message-content { 
-                max-width: 90%; 
+            .chat-messages {
+                padding: 10px;
+                max-height: 40vh;
             }
-            .input-wrapper { 
-                flex-direction: column; 
-                gap: 12px;
+            .input-container {
+                padding: 15px;
             }
-            .button-group { 
-                justify-content: center;
-                gap: 10px;
-            }
-            .send-button, .clear-button {
-                padding: 14px 20px;
+            .message-input {
+                padding: 12px 16px;
                 font-size: 0.9rem;
             }
-            .context-controls {
-                flex-direction: column;
-                gap: 10px;
+            .send-button, .clear-button {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+                min-height: 40px;
+            }
+            .context-toggle {
+                min-width: 90px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .format-btn {
+                min-width: 50px;
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 1rem;
+            }
+            .header p {
+                font-size: 0.7rem;
+            }
+            .header-btn {
+                padding: 5px 10px;
+                font-size: 0.7rem;
+                min-width: 60px;
+            }
+            .dialog-tab {
+                padding: 5px 10px 8px 10px;
+                min-width: 70px;
+                font-size: 0.7rem;
+            }
+            .chat-messages {
+                padding: 8px;
+                max-height: 35vh;
+            }
+            .input-container {
+                padding: 10px;
+            }
+            .message-input {
+                padding: 10px 14px;
+                font-size: 0.85rem;
+            }
+            .send-button, .clear-button {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                min-height: 35px;
+            }
+        }
+        
+        /* Landscape orientation adjustments */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .header-content {
+                height: 40px;
+                flex-direction: row;
+                gap: 15px;
+            }
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            .header p {
+                font-size: 0.8rem;
+            }
+            .chat-messages {
+                max-height: 35vh;
+            }
+            .input-container {
+                padding: 15px;
+            }
+        }
+        
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .header-btn,
+            .send-button,
+            .clear-button,
+            .format-btn,
+            .context-toggle,
+            .dialog-tab {
+                border-width: 0.5px;
+            }
+        }
+        
+        /* Screen size specific optimizations */
+        .screen-xs .header-content {
+            padding: 0 8px;
+        }
+        
+        .screen-xs .settings-panel {
+            padding: 8px;
+        }
+        
+        .screen-xs .input-container {
+            padding: 10px;
+        }
+        
+        .screen-sm .header-actions {
+            flex-wrap: wrap;
+        }
+        
+        .screen-sm .button-group {
+            flex-wrap: wrap;
+        }
+        
+        .landscape .chat-messages {
+            max-height: 35vh !important;
+        }
+        
+        .landscape .input-container {
+            padding: 10px 20px;
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .header-btn,
+            .send-button,
+            .clear-button,
+            .format-btn,
+            .context-toggle,
+            .dialog-tab {
+                min-height: 44px;
+            }
+            
+            .message-input,
+            .image-input,
+            .setting-group input,
+            .setting-group select {
+                min-height: 44px;
+                font-size: 16px;
             }
         }
     </style>
@@ -1740,9 +1984,100 @@
             }
         }
 
+        // Screen size detection and dynamic adjustments
+        function detectScreenSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const isMobile = width <= 768;
+            const isTablet = width > 768 && width <= 1024;
+            const isDesktop = width > 1024;
+            const isLandscape = width > height;
+            
+            // Add screen size classes to body for CSS targeting
+            document.body.className = document.body.className.replace(/\b(screen-xs|screen-sm|screen-md|screen-lg|screen-xl|landscape|portrait)\b/g, '');
+            
+            if (width <= 480) document.body.classList.add('screen-xs');
+            else if (width <= 768) document.body.classList.add('screen-sm');
+            else if (width <= 992) document.body.classList.add('screen-md');
+            else if (width <= 1200) document.body.classList.add('screen-lg');
+            else document.body.classList.add('screen-xl');
+            
+            if (isLandscape) document.body.classList.add('landscape');
+            else document.body.classList.add('portrait');
+            
+            // Adjust chat area height based on screen size - more compact
+            const chatMessages = document.querySelector('.chat-messages');
+            if (chatMessages) {
+                if (isMobile) {
+                    chatMessages.style.maxHeight = isLandscape ? '25vh' : '35vh';
+                } else if (isTablet) {
+                    chatMessages.style.maxHeight = '40vh';
+                } else {
+                    chatMessages.style.maxHeight = '50vh';
+                }
+            }
+            
+            // Adjust container max-width dynamically
+            const container = document.querySelector('.container');
+            if (container) {
+                if (width <= 480) {
+                    container.style.maxWidth = '100%';
+                    container.style.margin = '0';
+                } else if (width <= 768) {
+                    container.style.maxWidth = '100%';
+                    container.style.margin = '0';
+                } else if (width <= 992) {
+                    container.style.maxWidth = '98%';
+                } else if (width <= 1200) {
+                    container.style.maxWidth = '95%';
+                } else {
+                    container.style.maxWidth = '1400px';
+                }
+            }
+            
+            // Adjust button sizes for touch devices
+            const buttons = document.querySelectorAll('.header-btn, .send-button, .clear-button, .format-btn, .context-toggle');
+            buttons.forEach(btn => {
+                if (isMobile) {
+                    btn.style.minHeight = '44px'; // Touch-friendly minimum
+                    btn.style.minWidth = btn.classList.contains('header-btn') ? '80px' : '60px';
+                } else {
+                    btn.style.minHeight = '';
+                    btn.style.minWidth = '';
+                }
+            });
+            
+            // Adjust input field sizes
+            const inputs = document.querySelectorAll('.message-input, .image-input, .setting-group input, .setting-group select');
+            inputs.forEach(input => {
+                if (isMobile) {
+                    input.style.minHeight = '44px';
+                    input.style.fontSize = '16px'; // Prevents zoom on iOS
+                } else {
+                    input.style.minHeight = '';
+                    input.style.fontSize = '';
+                }
+            });
+            
+            console.log(`Screen: ${width}x${height}, Device: ${isMobile ? 'Mobile' : isTablet ? 'Tablet' : 'Desktop'}, Orientation: ${isLandscape ? 'Landscape' : 'Portrait'}`);
+        }
+        
         let app;
         document.addEventListener('DOMContentLoaded', () => {
             app = new AIChatApp();
+            
+            // Initialize screen size detection
+            detectScreenSize();
+            
+            // Listen for screen size changes
+            window.addEventListener('resize', function() {
+                detectScreenSize();
+            });
+            
+            // Listen for orientation changes
+            window.addEventListener('orientationchange', function() {
+                setTimeout(detectScreenSize, 100); // Small delay to ensure orientation change is complete
+            });
             
             // Bind tab switching events
             document.addEventListener('click', (e) => {
