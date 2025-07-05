@@ -216,6 +216,324 @@
             margin-bottom: 20px;
             border: 1px solid #f5c6cb;
         }
+        
+        /* Dialog management styles */
+        .dialog-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            overflow-x: auto;
+        }
+        
+        .dialog-tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .dialog-tab.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+        
+        .dialog-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .dialog-tab .tab-name {
+            margin-right: 8px;
+        }
+        
+        .dialog-tab .tab-close {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-left: 8px;
+            display: none;
+        }
+        
+        .dialog-tab:hover .tab-close {
+            display: inline-block;
+        }
+        
+        .dialog-tab .tab-close:hover {
+            background: #c82333;
+        }
+        
+        .add-dialog-btn {
+            padding: 12px 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.2s;
+        }
+        
+        .add-dialog-btn:hover {
+            background: #218838;
+        }
+        
+        .dialog-content {
+            display: none;
+        }
+        
+        .dialog-content.active {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        /* Markdown and LaTeX formatting styles */
+        .message-content {
+            line-height: 1.6;
+        }
+        
+        .message-content code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+        }
+        
+        .message-content pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border: 1px solid #e9ecef;
+        }
+        
+        .message-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .message-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+            margin: 10px 0;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .message-content h1, .message-content h2, .message-content h3,
+        .message-content h4, .message-content h5, .message-content h6 {
+            margin: 15px 0 10px 0;
+            color: #333;
+        }
+        
+        .message-content h1 { font-size: 1.5em; }
+        .message-content h2 { font-size: 1.3em; }
+        .message-content h3 { font-size: 1.1em; }
+        
+        .message-content ul, .message-content ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .message-content li {
+            margin: 5px 0;
+        }
+        
+        .message-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .message-content th, .message-content td {
+            border: 1px solid #e9ecef;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        
+        .message-content th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .message-content .math {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+        
+        .message-content .math-inline {
+            display: inline;
+        }
+        
+        .message-content .math-block {
+            display: block;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        /* Line partition styles */
+        .line-partition {
+            border-top: 1px solid #e9ecef;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .line-partition::before {
+            content: "---";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 10px;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        /* Formatting toolbar */
+        .formatting-toolbar {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .format-btn {
+            padding: 6px 12px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .format-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .format-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        /* Contextual relevance styles */
+        .context-panel {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 15px;
+            display: none;
+        }
+        
+        .context-panel.active {
+            display: block;
+        }
+        
+        .context-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .context-toggle {
+            padding: 8px 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .context-toggle:hover {
+            background: #218838;
+        }
+        
+        .context-toggle.active {
+            background: #dc3545;
+        }
+        
+        .context-toggle.active:hover {
+            background: #c82333;
+        }
+        
+        .relevance-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .relevance-high { background: #28a745; }
+        .relevance-medium { background: #ffc107; }
+        .relevance-low { background: #dc3545; }
+        
+        .context-summary {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .context-keywords {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        
+        .context-keyword {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .message.context-relevant {
+            border-left: 4px solid #28a745;
+        }
+        
+        .message.context-weak {
+            opacity: 0.6;
+        }
+        
+        .context-filter {
+            padding: 6px 10px;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .context-filter:hover {
+            background: #f8f9fa;
+        }
+        
+        .context-filter.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
         @media (max-width: 768px) {
             .container { padding: 10px; }
             .header h1 { font-size: 2rem; }
@@ -234,6 +552,14 @@
         </div>
 
         <div class="chat-container">
+            <div class="dialog-tabs">
+                <button class="dialog-tab active" data-dialog="0">
+                    <span class="tab-name">Chat 1</span>
+                    <button class="tab-close" onclick="event.stopPropagation(); app.deleteDialog(0)">×</button>
+                </button>
+                <button class="add-dialog-btn" onclick="app.addNewDialog()">+</button>
+            </div>
+            
             <div class="settings-panel">
                 <div class="settings-grid">
                     <div class="setting-group">
@@ -261,119 +587,273 @@
                             <option value="false">Disabled</option>
                         </select>
                     </div>
-                </div>
-            </div>
-
-            <div class="chat-messages" id="chat-messages">
-                <div class="message assistant">
-                    <div class="message-content">
-                        Hello! I'm your AI assistant powered by Puter.js. I can help you with text generation, image analysis, and more. What would you like to know?
-                    </div>
-                </div>
-            </div>
-
-            <div class="typing-indicator" id="typing-indicator">
-                <div class="typing-dots">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            </div>
-
-            <div class="input-container">
-                <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="message-input">Message</label>
-                        <textarea 
-                            id="message-input" 
-                            class="message-input" 
-                            placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
-                            rows="1"
-                        ></textarea>
+                    
+                    <div class="setting-group">
+                        <label for="context-window">Context Window</label>
+                        <select id="context-window">
+                            <option value="all">All Messages</option>
+                            <option value="last-5">Last 5 Messages</option>
+                            <option value="last-10">Last 10 Messages</option>
+                            <option value="last-20">Last 20 Messages</option>
+                            <option value="smart">Smart Context</option>
+                        </select>
                     </div>
                     
-                    <div class="input-group">
-                        <label for="image-url">Image URL (optional)</label>
-                        <input 
-                            type="url" 
-                            id="image-url" 
-                            class="image-input" 
-                            placeholder="https://example.com/image.jpg"
-                        >
+                    <div class="setting-group">
+                        <label for="relevance-threshold">Relevance Threshold</label>
+                        <input type="range" id="relevance-threshold" min="0" max="1" step="0.1" value="0.7">
+                        <span id="relevance-value">0.7</span>
                     </div>
                     
-                    <div class="button-group">
-                        <button id="send-button" class="send-button">Send</button>
-                        <button id="clear-button" class="clear-button">Clear</button>
+                    <div class="setting-group">
+                        <label for="context-mode">Context Mode</label>
+                        <select id="context-mode">
+                            <option value="conversation">Conversation</option>
+                            <option value="semantic">Semantic Search</option>
+                            <option value="hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="context-panel" id="context-panel">
+                <div class="context-controls">
+                    <button class="context-toggle" id="context-toggle">Enable Context Analysis</button>
+                    <button class="context-filter" data-filter="all">All Messages</button>
+                    <button class="context-filter active" data-filter="relevant">Relevant Only</button>
+                    <button class="context-filter" data-filter="high">High Relevance</button>
+                    <span id="context-status">Context analysis disabled</span>
+                </div>
+                <div class="context-summary" id="context-summary" style="display: none;">
+                    <strong>Context Summary:</strong>
+                    <div id="context-keywords" class="context-keywords"></div>
+                </div>
+            </div>
+
+            <div class="dialog-content active" data-dialog="0">
+                <div class="formatting-toolbar">
+                    <button class="format-btn" data-format="bold" title="Bold (Ctrl+B)">B</button>
+                    <button class="format-btn" data-format="italic" title="Italic (Ctrl+I)">I</button>
+                    <button class="format-btn" data-format="code" title="Code (Ctrl+K)">Code</button>
+                    <button class="format-btn" data-format="link" title="Link">Link</button>
+                    <button class="format-btn" data-format="math" title="Math">Math</button>
+                    <button class="format-btn" data-format="partition" title="Line Partition">---</button>
+                </div>
+
+                <div class="chat-messages" id="chat-messages-0">
+                    <div class="message assistant">
+                        <div class="message-content">
+                            Hello! I'm your AI assistant powered by Puter.js. I can help you with text generation, image analysis, and more. What would you like to know?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typing-indicator" id="typing-indicator-0">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+
+                                <div class="input-container">
+                    <div class="input-wrapper">
+                        <div class="input-group">
+                            <label for="message-input-0">Message</label>
+                            <textarea 
+                                id="message-input-0" 
+                                class="message-input" 
+                                placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
+                                rows="1"
+                            ></textarea>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="image-url-0">Image URL (optional)</label>
+                            <input 
+                                type="url" 
+                                id="image-url-0" 
+                                class="image-input" 
+                                placeholder="https://example.com/image.jpg"
+                            >
+                        </div>
+                        
+                        <div class="button-group">
+                            <button id="send-button-0" class="send-button">Send</button>
+                            <button id="clear-button-0" class="clear-button">Clear</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <script>
         class AIChatApp {
             constructor() {
                 this.isStreaming = false;
+                this.dialogs = new Map();
+                this.currentDialogId = 0;
+                this.dialogCounter = 1;
                 this.initializeElements();
                 this.bindEvents();
-                this.autoResizeTextarea();
+                this.initializeDialog(0);
                 this.loadModels();
             }
 
             initializeElements() {
-                this.chatMessages = document.getElementById('chat-messages');
-                this.messageInput = document.getElementById('message-input');
-                this.imageUrlInput = document.getElementById('image-url');
-                this.sendButton = document.getElementById('send-button');
-                this.clearButton = document.getElementById('clear-button');
-                this.typingIndicator = document.getElementById('typing-indicator');
+                this.dialogTabs = document.querySelector('.dialog-tabs');
                 this.modelSelect = document.getElementById('model-select');
                 this.maxTokensInput = document.getElementById('max-tokens');
                 this.temperatureInput = document.getElementById('temperature');
                 this.tempValue = document.getElementById('temp-value');
                 this.streamToggle = document.getElementById('stream-toggle');
+                this.contextWindow = document.getElementById('context-window');
+                this.relevanceThreshold = document.getElementById('relevance-threshold');
+                this.relevanceValue = document.getElementById('relevance-value');
+                this.contextMode = document.getElementById('context-mode');
+                this.contextToggle = document.getElementById('context-toggle');
+                this.contextPanel = document.getElementById('context-panel');
+                this.contextStatus = document.getElementById('context-status');
+                this.contextSummary = document.getElementById('context-summary');
+                this.contextKeywords = document.getElementById('context-keywords');
             }
 
             bindEvents() {
-                this.sendButton.addEventListener('click', () => this.sendMessage());
-                this.clearButton.addEventListener('click', () => this.clearChat());
-                this.messageInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        this.sendMessage();
-                    }
-                });
                 this.temperatureInput.addEventListener('input', (e) => {
                     this.tempValue.textContent = e.target.value;
                 });
-            }
 
-            autoResizeTextarea() {
-                this.messageInput.addEventListener('input', () => {
-                    this.messageInput.style.height = 'auto';
-                    this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 150) + 'px';
+                this.relevanceThreshold.addEventListener('input', (e) => {
+                    this.relevanceValue.textContent = e.target.value;
+                    this.updateContextAnalysis();
+                });
+
+                this.contextToggle.addEventListener('click', () => {
+                    this.toggleContextAnalysis();
+                });
+
+                // Context filter events
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('context-filter')) {
+                        this.applyContextFilter(e.target.dataset.filter);
+                    }
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        const currentInput = this.getCurrentMessageInput();
+                        if (!currentInput) return;
+
+                        switch (e.key) {
+                            case 'b':
+                                e.preventDefault();
+                                this.applyFormatting('bold');
+                                break;
+                            case 'i':
+                                e.preventDefault();
+                                this.applyFormatting('italic');
+                                break;
+                            case 'k':
+                                e.preventDefault();
+                                this.applyFormatting('code');
+                                break;
+                        }
+                    }
                 });
             }
 
-            async sendMessage() {
-                const message = this.messageInput.value.trim();
-                const imageUrl = this.imageUrlInput.value.trim();
+            initializeDialog(dialogId) {
+                const dialog = {
+                    id: dialogId,
+                    name: `Chat ${this.dialogCounter}`,
+                    messages: [],
+                    isStreaming: false
+                };
+
+                this.dialogs.set(dialogId, dialog);
+                this.dialogCounter++;
+
+                // Bind events for this dialog
+                const messageInput = document.getElementById(`message-input-${dialogId}`);
+                const imageUrlInput = document.getElementById(`image-url-${dialogId}`);
+                const sendButton = document.getElementById(`send-button-${dialogId}`);
+                const clearButton = document.getElementById(`clear-button-${dialogId}`);
+
+                if (messageInput) {
+                    this.autoResizeTextarea(messageInput);
+                    messageInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            this.sendMessage(dialogId);
+                        }
+                    });
+                }
+
+                if (sendButton) {
+                    sendButton.addEventListener('click', () => this.sendMessage(dialogId));
+                }
+
+                if (clearButton) {
+                    clearButton.addEventListener('click', () => this.clearChat(dialogId));
+                }
+
+                // Bind formatting toolbar events
+                const toolbar = document.querySelector(`[data-dialog="${dialogId}"] .formatting-toolbar`);
+                if (toolbar) {
+                    toolbar.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('format-btn')) {
+                            const format = e.target.dataset.format;
+                            this.applyFormatting(format);
+                        }
+                    });
+                }
+            }
+
+            autoResizeTextarea(textarea) {
+                textarea.addEventListener('input', () => {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+                });
+            }
+
+            getCurrentMessageInput() {
+                return document.getElementById(`message-input-${this.currentDialogId}`);
+            }
+
+            getCurrentImageInput() {
+                return document.getElementById(`image-url-${this.currentDialogId}`);
+            }
+
+            getCurrentChatMessages() {
+                return document.getElementById(`chat-messages-${this.currentDialogId}`);
+            }
+
+            getCurrentTypingIndicator() {
+                return document.getElementById(`typing-indicator-${this.currentDialogId}`);
+            }
+
+            async sendMessage(dialogId = this.currentDialogId) {
+                const messageInput = document.getElementById(`message-input-${dialogId}`);
+                const imageUrlInput = document.getElementById(`image-url-${dialogId}`);
+                const message = messageInput.value.trim();
+                const imageUrl = imageUrlInput.value.trim();
                 
                 if (!message && !imageUrl) {
-                    this.showError('Please enter a message or image URL');
+                    this.showError('Please enter a message or image URL', dialogId);
                     return;
                 }
 
-                if (this.isStreaming) return;
+                const dialog = this.dialogs.get(dialogId);
+                if (dialog.isStreaming) return;
 
-                this.addMessage('user', message, imageUrl);
+                this.addMessage('user', message, imageUrl, dialogId);
                 
-                this.messageInput.value = '';
-                this.imageUrlInput.value = '';
-                this.messageInput.style.height = 'auto';
+                messageInput.value = '';
+                imageUrlInput.value = '';
+                messageInput.style.height = 'auto';
 
-                this.showTypingIndicator();
+                this.showTypingIndicator(dialogId);
 
                 try {
                     const options = {
@@ -391,43 +871,45 @@
                         response = await puter.ai.chat(message, options);
                     }
 
-                    this.hideTypingIndicator();
+                    this.hideTypingIndicator(dialogId);
 
                     if (options.stream) {
-                        await this.handleStreamResponse(response);
+                        await this.handleStreamResponse(response, dialogId);
                     } else {
-                        this.addMessage('assistant', response);
+                        this.addMessage('assistant', response, null, dialogId);
                     }
 
                 } catch (error) {
-                    this.hideTypingIndicator();
-                    this.showError(`Error: ${error.message}`);
+                    this.hideTypingIndicator(dialogId);
+                    this.showError(`Error: ${error.message}`, dialogId);
                     console.error('AI Chat Error:', error);
                 }
             }
 
-            async handleStreamResponse(response) {
-                const messageDiv = this.addMessage('assistant', '');
+            async handleStreamResponse(response, dialogId) {
+                const messageDiv = this.addMessage('assistant', '', null, dialogId);
                 const contentDiv = messageDiv.querySelector('.message-content');
                 
-                this.isStreaming = true;
+                const dialog = this.dialogs.get(dialogId);
+                dialog.isStreaming = true;
                 
                 try {
                     for await (const part of response) {
                         if (part?.text) {
-                            contentDiv.textContent += part.text;
-                            this.scrollToBottom();
+                            contentDiv.innerHTML += this.formatText(part.text);
+                            this.scrollToBottom(dialogId);
                         }
                     }
                 } catch (error) {
-                    contentDiv.textContent += '\n\n[Stream ended with error]';
+                    contentDiv.innerHTML += '\n\n[Stream ended with error]';
                     console.error('Stream error:', error);
                 } finally {
-                    this.isStreaming = false;
+                    dialog.isStreaming = false;
                 }
             }
 
-            addMessage(role, content, imageUrl = null) {
+            addMessage(role, content, imageUrl = null, dialogId = this.currentDialogId) {
+                const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${role}`;
                 
@@ -444,49 +926,271 @@
                     contentDiv.appendChild(document.createElement('br'));
                     contentDiv.appendChild(img);
                 } else {
-                    contentDiv.textContent = content;
+                    contentDiv.innerHTML = this.formatText(content);
                 }
                 
                 messageDiv.appendChild(contentDiv);
-                this.chatMessages.appendChild(messageDiv);
+                chatMessages.appendChild(messageDiv);
                 
-                this.scrollToBottom();
+                this.scrollToBottom(dialogId);
                 return messageDiv;
             }
 
-            showTypingIndicator() {
-                this.typingIndicator.style.display = 'block';
-                this.scrollToBottom();
+            formatText(text) {
+                if (!text) return '';
+                
+                // Handle line partitions
+                text = text.replace(/^---$/gm, '<div class="line-partition"></div>');
+                
+                // Handle LaTeX math
+                text = text.replace(/\$\$(.*?)\$\$/g, '<div class="math math-block">$1</div>');
+                text = text.replace(/\$(.*?)\$/g, '<span class="math math-inline">$1</span>');
+                
+                // Handle Markdown formatting
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                text = text.replace(/`(.*?)`/g, '<code>$1</code>');
+                text = text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+                text = text.replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>');
+                
+                // Handle headers
+                text = text.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+                text = text.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+                text = text.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+                
+                // Handle lists
+                text = text.replace(/^\* (.*$)/gm, '<li>$1</li>');
+                text = text.replace(/^- (.*$)/gm, '<li>$1</li>');
+                text = text.replace(/^(\d+)\. (.*$)/gm, '<li>$2</li>');
+                
+                // Wrap consecutive list items in ul/ol
+                text = text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+                
+                // Handle line breaks
+                text = text.replace(/\n/g, '<br>');
+                
+                return text;
             }
 
-            hideTypingIndicator() {
-                this.typingIndicator.style.display = 'none';
+            applyFormatting(format) {
+                const textarea = this.getCurrentMessageInput();
+                if (!textarea) return;
+
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
+                let replacement = '';
+
+                switch (format) {
+                    case 'bold':
+                        replacement = `**${selectedText}**`;
+                        break;
+                    case 'italic':
+                        replacement = `*${selectedText}*`;
+                        break;
+                    case 'code':
+                        replacement = `\`${selectedText}\``;
+                        break;
+                    case 'link':
+                        const url = prompt('Enter URL:');
+                        if (url) {
+                            replacement = `[${selectedText}](${url})`;
+                        } else {
+                            return;
+                        }
+                        break;
+                    case 'math':
+                        replacement = `$${selectedText}$`;
+                        break;
+                    case 'partition':
+                        replacement = selectedText + '\n---\n';
+                        break;
+                }
+
+                textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start + replacement.length, start + replacement.length);
             }
 
-            clearChat() {
-                this.chatMessages.innerHTML = `
-                    <div class="message assistant">
-                        <div class="message-content">
-                            Hello! I'm your AI assistant powered by Puter.js. I can help you with text generation, image analysis, and more. What would you like to know?
+            showTypingIndicator(dialogId) {
+                const indicator = document.getElementById(`typing-indicator-${dialogId}`);
+                if (indicator) {
+                    indicator.style.display = 'block';
+                    this.scrollToBottom(dialogId);
+                }
+            }
+
+            hideTypingIndicator(dialogId) {
+                const indicator = document.getElementById(`typing-indicator-${dialogId}`);
+                if (indicator) {
+                    indicator.style.display = 'none';
+                }
+            }
+
+            clearChat(dialogId = this.currentDialogId) {
+                const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
+                if (chatMessages) {
+                    chatMessages.innerHTML = `
+                        <div class="message assistant">
+                            <div class="message-content">
+                                Hello! I'm your AI assistant powered by Puter.js. I can help you with text generation, image analysis, and more. What would you like to know?
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            showError(message, dialogId = this.currentDialogId) {
+                const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
+                if (chatMessages) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.textContent = message;
+                    chatMessages.appendChild(errorDiv);
+                    this.scrollToBottom(dialogId);
+                    
+                    setTimeout(() => {
+                        errorDiv.remove();
+                    }, 5000);
+                }
+            }
+
+            scrollToBottom(dialogId = this.currentDialogId) {
+                const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
+                if (chatMessages) {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            }
+
+            addNewDialog() {
+                const dialogId = Date.now();
+                const dialogName = `Chat ${this.dialogCounter}`;
+                
+                // Create tab
+                const tab = document.createElement('button');
+                tab.className = 'dialog-tab';
+                tab.dataset.dialog = dialogId;
+                tab.innerHTML = `
+                    <span class="tab-name">${dialogName}</span>
+                    <button class="tab-close" onclick="event.stopPropagation(); app.deleteDialog(${dialogId})">×</button>
+                `;
+                
+                // Insert before the add button
+                const addBtn = document.querySelector('.add-dialog-btn');
+                this.dialogTabs.insertBefore(tab, addBtn);
+                
+                // Create dialog content
+                const dialogContent = document.createElement('div');
+                dialogContent.className = 'dialog-content';
+                dialogContent.dataset.dialog = dialogId;
+                dialogContent.innerHTML = `
+                    <div class="formatting-toolbar">
+                        <button class="format-btn" data-format="bold" title="Bold (Ctrl+B)">B</button>
+                        <button class="format-btn" data-format="italic" title="Italic (Ctrl+I)">I</button>
+                        <button class="format-btn" data-format="code" title="Code (Ctrl+K)">Code</button>
+                        <button class="format-btn" data-format="link" title="Link">Link</button>
+                        <button class="format-btn" data-format="math" title="Math">Math</button>
+                        <button class="format-btn" data-format="partition" title="Line Partition">---</button>
+                    </div>
+
+                    <div class="chat-messages" id="chat-messages-${dialogId}">
+                        <div class="message assistant">
+                            <div class="message-content">
+                                Hello! I'm your AI assistant powered by Puter.js. I can help you with text generation, image analysis, and more. What would you like to know?
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="typing-indicator" id="typing-indicator-${dialogId}">
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+
+                    <div class="input-container">
+                        <div class="input-wrapper">
+                            <div class="input-group">
+                                <label for="message-input-${dialogId}">Message</label>
+                                <textarea 
+                                    id="message-input-${dialogId}" 
+                                    class="message-input" 
+                                    placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
+                                    rows="1"
+                                ></textarea>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="image-url-${dialogId}">Image URL (optional)</label>
+                                <input 
+                                    type="url" 
+                                    id="image-url-${dialogId}" 
+                                    class="image-input" 
+                                    placeholder="https://example.com/image.jpg"
+                                >
+                            </div>
+                            
+                            <div class="button-group">
+                                <button id="send-button-${dialogId}" class="send-button">Send</button>
+                                <button id="clear-button-${dialogId}" class="clear-button">Clear</button>
+                            </div>
                         </div>
                     </div>
                 `;
-            }
-
-            showError(message) {
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'error-message';
-                errorDiv.textContent = message;
-                this.chatMessages.appendChild(errorDiv);
-                this.scrollToBottom();
                 
-                setTimeout(() => {
-                    errorDiv.remove();
-                }, 5000);
+                // Insert dialog content
+                const chatContainer = document.querySelector('.chat-container');
+                chatContainer.appendChild(dialogContent);
+                
+                // Initialize the new dialog
+                this.initializeDialog(dialogId);
+                
+                // Switch to the new dialog
+                this.switchDialog(dialogId);
             }
 
-            scrollToBottom() {
-                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            deleteDialog(dialogId) {
+                if (this.dialogs.size <= 1) {
+                    this.showError('Cannot delete the last dialog', dialogId);
+                    return;
+                }
+
+                // Remove tab
+                const tab = document.querySelector(`[data-dialog="${dialogId}"]`);
+                if (tab) tab.remove();
+
+                // Remove dialog content
+                const dialogContent = document.querySelector(`.dialog-content[data-dialog="${dialogId}"]`);
+                if (dialogContent) dialogContent.remove();
+
+                // Remove from dialogs map
+                this.dialogs.delete(dialogId);
+
+                // Switch to first available dialog
+                const firstDialogId = Array.from(this.dialogs.keys())[0];
+                if (firstDialogId !== undefined) {
+                    this.switchDialog(firstDialogId);
+                }
+            }
+
+            switchDialog(dialogId) {
+                // Update current dialog
+                this.currentDialogId = dialogId;
+
+                // Update tab states
+                document.querySelectorAll('.dialog-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                const activeTab = document.querySelector(`[data-dialog="${dialogId}"]`);
+                if (activeTab) activeTab.classList.add('active');
+
+                // Update dialog content visibility
+                document.querySelectorAll('.dialog-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                const activeContent = document.querySelector(`.dialog-content[data-dialog="${dialogId}"]`);
+                if (activeContent) activeContent.classList.add('active');
             }
 
             async loadModels() {
@@ -511,10 +1215,267 @@
                     this.showError('Failed to load model list.');
                 }
             }
+
+            // Contextual Relevance Methods
+            toggleContextAnalysis() {
+                const isActive = this.contextToggle.classList.contains('active');
+                if (isActive) {
+                    this.disableContextAnalysis();
+                } else {
+                    this.enableContextAnalysis();
+                }
+            }
+
+            enableContextAnalysis() {
+                this.contextToggle.classList.add('active');
+                this.contextToggle.textContent = 'Disable Context Analysis';
+                this.contextPanel.classList.add('active');
+                this.contextStatus.textContent = 'Context analysis enabled';
+                this.updateContextAnalysis();
+            }
+
+            disableContextAnalysis() {
+                this.contextToggle.classList.remove('active');
+                this.contextToggle.textContent = 'Enable Context Analysis';
+                this.contextPanel.classList.remove('active');
+                this.contextStatus.textContent = 'Context analysis disabled';
+                this.contextSummary.style.display = 'none';
+                this.clearContextFilters();
+            }
+
+            updateContextAnalysis() {
+                if (!this.contextToggle.classList.contains('active')) return;
+                
+                const dialog = this.dialogs.get(this.currentDialogId);
+                if (!dialog || !dialog.messages.length) return;
+
+                const contextMessages = this.getContextMessages();
+                const keywords = this.extractKeywords(contextMessages);
+                const relevanceScores = this.calculateRelevanceScores(contextMessages, keywords);
+                
+                this.updateContextSummary(keywords);
+                this.updateMessageRelevance(relevanceScores);
+            }
+
+            getContextMessages() {
+                const dialog = this.dialogs.get(this.currentDialogId);
+                if (!dialog) return [];
+
+                const contextWindow = this.contextWindow.value;
+                let messages = dialog.messages;
+
+                switch (contextWindow) {
+                    case 'last-5':
+                        messages = messages.slice(-5);
+                        break;
+                    case 'last-10':
+                        messages = messages.slice(-10);
+                        break;
+                    case 'last-20':
+                        messages = messages.slice(-20);
+                        break;
+                    case 'smart':
+                        messages = this.getSmartContext(messages);
+                        break;
+                    default:
+                        // 'all' - use all messages
+                        break;
+                }
+
+                return messages;
+            }
+
+            getSmartContext(messages) {
+                if (messages.length <= 10) return messages;
+                
+                // Keep the last 5 messages and add relevant earlier messages
+                const recentMessages = messages.slice(-5);
+                const earlierMessages = messages.slice(0, -5);
+                
+                // Simple relevance scoring based on keyword frequency
+                const recentKeywords = this.extractKeywords(recentMessages);
+                const scoredMessages = earlierMessages.map(msg => ({
+                    message: msg,
+                    score: this.calculateMessageRelevance(msg.content, recentKeywords)
+                }));
+                
+                // Keep messages with higher relevance scores
+                const relevantEarlier = scoredMessages
+                    .filter(item => item.score > 0.3)
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 5)
+                    .map(item => item.message);
+                
+                return [...relevantEarlier, ...recentMessages];
+            }
+
+            extractKeywords(messages) {
+                const allText = messages.map(m => m.content).join(' ');
+                const words = allText.toLowerCase()
+                    .replace(/[^\w\s]/g, '')
+                    .split(/\s+/)
+                    .filter(word => word.length > 3);
+                
+                const wordFreq = {};
+                words.forEach(word => {
+                    wordFreq[word] = (wordFreq[word] || 0) + 1;
+                });
+                
+                // Return top keywords by frequency
+                return Object.entries(wordFreq)
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, 10)
+                    .map(([word]) => word);
+            }
+
+            calculateRelevanceScores(messages, keywords) {
+                return messages.map(msg => ({
+                    id: msg.id,
+                    content: msg.content,
+                    score: this.calculateMessageRelevance(msg.content, keywords)
+                }));
+            }
+
+            calculateMessageRelevance(content, keywords) {
+                if (!keywords.length) return 0;
+                
+                const contentWords = content.toLowerCase().split(/\s+/);
+                const matches = keywords.filter(keyword => 
+                    contentWords.some(word => word.includes(keyword))
+                );
+                
+                return matches.length / keywords.length;
+            }
+
+            updateContextSummary(keywords) {
+                this.contextKeywords.innerHTML = '';
+                keywords.forEach(keyword => {
+                    const span = document.createElement('span');
+                    span.className = 'context-keyword';
+                    span.textContent = keyword;
+                    this.contextKeywords.appendChild(span);
+                });
+                this.contextSummary.style.display = 'block';
+            }
+
+            updateMessageRelevance(relevanceScores) {
+                const chatMessages = this.getCurrentChatMessages();
+                if (!chatMessages) return;
+
+                const messageElements = chatMessages.querySelectorAll('.message');
+                messageElements.forEach((element, index) => {
+                    const score = relevanceScores[index]?.score || 0;
+                    const threshold = parseFloat(this.relevanceThreshold.value);
+                    
+                    element.classList.remove('context-relevant', 'context-weak');
+                    
+                    if (score >= threshold) {
+                        element.classList.add('context-relevant');
+                    } else if (score < threshold * 0.5) {
+                        element.classList.add('context-weak');
+                    }
+                });
+            }
+
+            applyContextFilter(filterType) {
+                // Update filter button states
+                document.querySelectorAll('.context-filter').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.classList.add('active');
+
+                const chatMessages = this.getCurrentChatMessages();
+                if (!chatMessages) return;
+
+                const messageElements = chatMessages.querySelectorAll('.message');
+                const threshold = parseFloat(this.relevanceThreshold.value);
+
+                messageElements.forEach(element => {
+                    const isRelevant = element.classList.contains('context-relevant');
+                    const isWeak = element.classList.contains('context-weak');
+                    
+                    switch (filterType) {
+                        case 'all':
+                            element.style.display = 'block';
+                            break;
+                        case 'relevant':
+                            element.style.display = isRelevant ? 'block' : 'none';
+                            break;
+                        case 'high':
+                            element.style.display = (isRelevant && !isWeak) ? 'block' : 'none';
+                            break;
+                    }
+                });
+            }
+
+            clearContextFilters() {
+                const chatMessages = this.getCurrentChatMessages();
+                if (!chatMessages) return;
+
+                const messageElements = chatMessages.querySelectorAll('.message');
+                messageElements.forEach(element => {
+                    element.style.display = 'block';
+                    element.classList.remove('context-relevant', 'context-weak');
+                });
+            }
+
+            // Enhanced message handling with context
+            addMessage(role, content, imageUrl = null, dialogId = this.currentDialogId) {
+                const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${role}`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                
+                if (imageUrl && role === 'user') {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = 'User uploaded image';
+                    img.style.maxWidth = '200px';
+                    img.style.marginTop = '10px';
+                    contentDiv.appendChild(document.createTextNode(content));
+                    contentDiv.appendChild(document.createElement('br'));
+                    contentDiv.appendChild(img);
+                } else {
+                    contentDiv.innerHTML = this.formatText(content);
+                }
+                
+                messageDiv.appendChild(contentDiv);
+                chatMessages.appendChild(messageDiv);
+                
+                // Store message in dialog context
+                const dialog = this.dialogs.get(dialogId);
+                if (dialog) {
+                    dialog.messages.push({
+                        id: Date.now(),
+                        role: role,
+                        content: content,
+                        timestamp: new Date()
+                    });
+                }
+                
+                // Update context analysis if enabled
+                if (this.contextToggle.classList.contains('active')) {
+                    setTimeout(() => this.updateContextAnalysis(), 100);
+                }
+                
+                this.scrollToBottom(dialogId);
+                return messageDiv;
+            }
         }
 
+        let app;
         document.addEventListener('DOMContentLoaded', () => {
-            new AIChatApp();
+            app = new AIChatApp();
+            
+            // Bind tab switching events
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.dialog-tab') && !e.target.closest('.tab-close')) {
+                    const dialogId = parseInt(e.target.closest('.dialog-tab').dataset.dialog);
+                    app.switchDialog(dialogId);
+                }
+            });
         });
     </script>
 </body>
