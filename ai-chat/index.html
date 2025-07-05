@@ -12,11 +12,12 @@
             background: #f5f5f5;
             min-height: 100vh;
             color: #333;
+            overflow-x: hidden;
         }
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             background: white;
@@ -53,21 +54,24 @@
         }
         
         .header-btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: white;
             color: #333;
             border: 1px solid #e0e0e0;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 400;
-            transition: background 0.2s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            min-width: 100px;
+            justify-content: center;
         }
         
         .header-btn:hover {
             background: #f5f5f5;
+            border-color: #ccc;
         }
         
         .header-btn.active {
@@ -110,11 +114,12 @@
         }
         .setting-group select,
         .setting-group input {
-            padding: 12px 16px;
+            padding: 14px 18px;
             border: 1px solid #e0e0e0;
             font-size: 0.95rem;
-            transition: border 0.2s;
+            transition: all 0.2s;
             background: white;
+            min-height: 50px;
         }
         .setting-group select:focus,
         .setting-group input:focus {
@@ -130,6 +135,8 @@
             padding: 20px;
             overflow-y: auto;
             background: white;
+            min-height: 300px;
+            max-height: 60vh;
         }
         .message {
             margin-bottom: 20px;
@@ -227,18 +234,20 @@
             border-color: #333;
         }
         .send-button {
-            padding: 16px 30px;
+            padding: 14px 28px;
             background: #333;
             color: white;
             border: 1px solid #333;
             font-size: 1rem;
             font-weight: 400;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             min-width: 120px;
+            min-height: 50px;
         }
         .send-button:hover {
             background: #555;
+            border-color: #555;
         }
         .send-button:disabled {
             background: #ccc;
@@ -246,17 +255,19 @@
             cursor: not-allowed;
         }
         .clear-button {
-            padding: 12px 20px;
+            padding: 14px 24px;
             background: white;
             color: #333;
             border: 1px solid #e0e0e0;
             font-size: 0.9rem;
             font-weight: 400;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            min-height: 50px;
         }
         .clear-button:hover { 
             background: #f5f5f5;
+            border-color: #ccc;
         }
         .button-group { 
             display: flex; 
@@ -291,16 +302,17 @@
         }
         
         .dialog-tab {
-            padding: 8px 20px 12px 20px;
+            padding: 12px 24px 16px 24px;
             background: #f5f5f5;
             border: 1px solid #e0e0e0;
             border-bottom: none;
             cursor: pointer;
             white-space: nowrap;
-            transition: background 0.2s;
+            transition: all 0.2s;
             position: relative;
             margin-right: 1px;
-            min-width: 120px;
+            min-width: 140px;
+            min-height: 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -317,6 +329,7 @@
         
         .dialog-tab:hover:not(.active) {
             background: #e8e8e8;
+            border-color: #ccc;
         }
         
         .dialog-tab .tab-name {
@@ -330,15 +343,15 @@
             background: #e0e0e0;
             color: #666;
             border: none;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             font-size: 12px;
             cursor: pointer;
-            margin-left: 8px;
+            margin-left: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
         
         .dialog-tab:hover .tab-close {
@@ -351,7 +364,7 @@
         }
         
         .add-dialog-btn {
-            padding: 8px 16px 12px 16px;
+            padding: 10px 20px 12px 20px;
             background: #333;
             color: white;
             border: 1px solid #333;
@@ -359,16 +372,18 @@
             cursor: pointer;
             font-size: 1.2rem;
             font-weight: 400;
-            transition: background 0.2s;
+            transition: all 0.2s;
             margin-left: 1px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 45px;
+            min-width: 50px;
+            min-height: 40px;
         }
         
         .add-dialog-btn:hover {
             background: #555;
+            border-color: #555;
         }
         
         .dialog-content {
@@ -495,16 +510,22 @@
         }
         
         .format-btn {
-            padding: 6px 12px;
+            padding: 8px 16px;
             background: white;
             border: 1px solid #e0e0e0;
             cursor: pointer;
-            font-size: 0.8rem;
-            transition: background 0.2s;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 80px;
+            justify-content: center;
         }
         
         .format-btn:hover {
             background: #f5f5f5;
+            border-color: #ccc;
         }
         
         .format-btn.active {
@@ -533,17 +554,20 @@
         }
         
         .context-toggle {
-            padding: 8px 12px;
+            padding: 10px 20px;
             background: #333;
             color: white;
             border: 1px solid #333;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            min-width: 120px;
+            min-height: 40px;
         }
         
         .context-toggle:hover {
             background: #555;
+            border-color: #555;
         }
         
         .context-toggle.active {
@@ -553,6 +577,7 @@
         
         .context-toggle.active:hover {
             background: #777;
+            border-color: #777;
         }
         
         .relevance-indicator {
@@ -598,16 +623,19 @@
         }
         
         .context-filter {
-            padding: 6px 10px;
+            padding: 8px 16px;
             border: 1px solid #e0e0e0;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             background: white;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            min-width: 80px;
+            min-height: 36px;
         }
         
         .context-filter:hover {
             background: #f5f5f5;
+            border-color: #ccc;
         }
         
         .context-filter.active {
