@@ -986,7 +986,7 @@
                     <div class="setting-group">
                         <label for="model-select">AI Model</label>
                         <select id="model-select">
-                            <option value="gpt-4o">GPT-4o (Recommended)</option>
+                            <!-- Models will be loaded dynamically from models.json -->
                         </select>
                     </div>
                     
@@ -1622,25 +1622,71 @@
                     // Clear existing options
                     this.modelSelect.innerHTML = '';
                     
+                    // Ensure we have a valid models array
+                    if (!data.models || !Array.isArray(data.models)) {
+                        console.error('Invalid models data:', data);
+                        this.showError('Invalid model list format.');
+                        return;
+                    }
+                    
+                    // Filter out any undefined, null, or empty models
+                    const validModels = data.models.filter(model => 
+                        model && typeof model === 'string' && model.trim() !== ''
+                    );
+                    
+                    if (validModels.length === 0) {
+                        console.error('No valid models found in models.json');
+                        this.showError('No valid models found.');
+                        return;
+                    }
+                    
                     // Sort models by category and popularity
-                    const sortedModels = this.sortModels(data.models);
+                    const sortedModels = this.sortModels(validModels);
                     
                     // Add sorted models to the select
                     sortedModels.forEach(model => {
-                        if (model && model.trim() !== '') {
-                            const option = document.createElement('option');
-                            option.value = model;
-                            option.textContent = this.formatModelDisplayName(model);
-                            this.modelSelect.appendChild(option);
-                        }
+                        const option = document.createElement('option');
+                        option.value = model;
+                        option.textContent = model; // Use exact model name from JSON
+                        this.modelSelect.appendChild(option);
                     });
+                    
+                    console.log(`Loaded ${sortedModels.length} models successfully`);
                 } catch (error) {
                     console.error('Error loading models:', error);
                     this.showError('Failed to load model list.');
+                    
+                    // Add fallback models to prevent complete failure
+                    const fallbackModels = [
+                        'gpt-4o',
+                        'gpt-4o-mini',
+                        'claude-3-5-sonnet-latest',
+                        'gemini-1.5-flash'
+                    ];
+                    
+                    fallbackModels.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model;
+                        option.textContent = model; // Use exact model name
+                        this.modelSelect.appendChild(option);
+                    });
+                    
+                    console.log('Loaded fallback models');
                 }
             }
 
             sortModels(models) {
+                // Ensure models is a valid array
+                if (!Array.isArray(models)) {
+                    console.error('Invalid models array:', models);
+                    return [];
+                }
+                
+                // Filter out any invalid models before sorting
+                const validModels = models.filter(model => 
+                    model && typeof model === 'string' && model.trim() !== ''
+                );
+                
                 // Define model categories and their priority
                 const categories = {
                     'gpt': { priority: 1, name: 'OpenAI GPT' },
@@ -1658,7 +1704,10 @@
                     'openrouter': { priority: 13, name: 'OpenRouter' }
                 };
 
-                return models.sort((a, b) => {
+                return validModels.sort((a, b) => {
+                    // Ensure both a and b are valid strings
+                    if (!a || !b) return 0;
+                    
                     const aCategory = this.getModelCategory(a);
                     const bCategory = this.getModelCategory(b);
                     
@@ -1673,6 +1722,11 @@
             }
 
             getModelCategory(model) {
+                // Ensure model is a valid string
+                if (!model || typeof model !== 'string') {
+                    return { priority: 999, name: 'Other' };
+                }
+                
                 const lowerModel = model.toLowerCase();
                 
                 for (const [key, category] of Object.entries(this.modelCategories)) {
@@ -1684,26 +1738,7 @@
                 return { priority: 999, name: 'Other' };
             }
 
-            formatModelDisplayName(model) {
-                // Remove common prefixes for cleaner display
-                const cleanName = model
-                    .replace(/^openrouter:/, '')
-                    .replace(/^anthropic\//, '')
-                    .replace(/^openai\//, '')
-                    .replace(/^google\//, '')
-                    .replace(/^meta-llama\//, '')
-                    .replace(/^mistralai\//, '')
-                    .replace(/^qwen\//, '')
-                    .replace(/^deepseek\//, '')
-                    .replace(/^x-ai\//, '')
-                    .replace(/^cohere\//, '');
-                
-                // Convert kebab-case to Title Case
-                return cleanName
-                    .split('-')
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(' ');
-            }
+
 
             get modelCategories() {
                 return {
