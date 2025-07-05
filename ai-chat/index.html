@@ -9,67 +9,121 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: white;
+            background: #f5f5f5;
             min-height: 100vh;
             color: #333;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
             height: 100vh;
             display: flex;
             flex-direction: column;
+            background: white;
         }
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            background: white;
+            color: #333;
+            padding: 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 60px;
+        }
+        .header h1 { 
+            font-size: 1.5rem; 
+            font-weight: 400; 
+            margin: 0;
             color: #333;
         }
-        .header h1 { font-size: 2.5rem; font-weight: 300; margin-bottom: 10px; }
-        .header p { font-size: 1.1rem; opacity: 0.9; }
+        .header p { 
+            font-size: 0.9rem; 
+            color: #666;
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .header-btn {
+            padding: 8px 16px;
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .header-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .header-btn.active {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
+        
+        .btn-icon {
+            font-size: 1rem;
+        }
         .chat-container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
         .settings-panel {
-            background: #f8f9fa;
+            background: white;
             padding: 20px;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #e0e0e0;
         }
         .settings-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
             align-items: end;
         }
         .setting-group {
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         .setting-group label {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #495057;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: #333;
             font-size: 0.9rem;
         }
         .setting-group select,
         .setting-group input {
-            padding: 10px 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: border-color 0.2s;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            font-size: 0.95rem;
+            transition: border 0.2s;
+            background: white;
         }
         .setting-group select:focus,
         .setting-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #333;
+        }
+        .setting-group select:hover,
+        .setting-group input:hover {
+            border-color: #ccc;
         }
         .chat-messages {
             flex: 1;
@@ -86,18 +140,17 @@
             display: inline-block;
             max-width: 70%;
             padding: 15px 20px;
-            border-radius: 18px;
             word-wrap: break-word;
             line-height: 1.5;
         }
         .message.user .message-content {
-            background: #667eea;
+            background: #333;
             color: white;
         }
         .message.assistant .message-content {
-            background: #f8f9fa;
+            background: #f5f5f5;
             color: #333;
-            border: 1px solid #e9ecef;
+            border: 1px solid #e0e0e0;
         }
         .message.assistant .message-content img {
             max-width: 100%;
@@ -107,9 +160,8 @@
         .typing-indicator {
             display: none;
             padding: 15px 20px;
-            background: #f8f9fa;
-            border-radius: 18px;
-            border: 1px solid #e9ecef;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
             max-width: 70%;
         }
         .typing-dots {
@@ -119,20 +171,19 @@
         .typing-dot {
             width: 8px;
             height: 8px;
-            background: #667eea;
-            border-radius: 50%;
+            background: #333;
             animation: typing 1.4s infinite ease-in-out;
         }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
         .input-container {
-            padding: 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
+            padding: 25px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
         }
         .input-wrapper {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             align-items: flex-end;
         }
         .input-group {
@@ -141,65 +192,77 @@
             flex-direction: column;
         }
         .input-group label {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #495057;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: #333;
             font-size: 0.9rem;
         }
         .message-input {
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid #e0e0e0;
             font-size: 1rem;
             resize: vertical;
-            min-height: 50px;
+            min-height: 55px;
             max-height: 150px;
             font-family: inherit;
-            transition: border-color 0.2s;
+            transition: border 0.2s;
+            background: white;
         }
         .message-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #333;
+        }
+        .message-input:hover {
+            border-color: #ccc;
         }
         .image-input {
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            font-size: 0.95rem;
+            background: white;
+            transition: border 0.2s;
+        }
+        .image-input:focus {
+            outline: none;
+            border-color: #333;
         }
         .send-button {
-            padding: 15px 25px;
-            background: #667eea;
+            padding: 16px 30px;
+            background: #333;
             color: white;
-            border: none;
-            border-radius: 12px;
+            border: 1px solid #333;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 400;
             cursor: pointer;
-            transition: all 0.2s;
-            min-width: 100px;
+            transition: background 0.2s;
+            min-width: 120px;
         }
         .send-button:hover {
-            background: #5a6fd8;
-            transform: translateY(-1px);
+            background: #555;
         }
         .send-button:disabled {
-            background: #adb5bd;
+            background: #ccc;
+            border-color: #ccc;
             cursor: not-allowed;
-            transform: none;
         }
         .clear-button {
-            padding: 10px 15px;
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 8px;
+            padding: 12px 20px;
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
             font-size: 0.9rem;
+            font-weight: 400;
             cursor: pointer;
             transition: background 0.2s;
         }
-        .clear-button:hover { background: #5a6268; }
-        .button-group { display: flex; gap: 10px; }
+        .clear-button:hover { 
+            background: #f5f5f5;
+        }
+        .button-group { 
+            display: flex; 
+            gap: 12px; 
+            align-items: flex-end;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -217,73 +280,95 @@
             border: 1px solid #f5c6cb;
         }
         
-        /* Dialog management styles */
+        /* Minimalist dialog tabs */
         .dialog-tabs {
             display: flex;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
             overflow-x: auto;
+            height: 40px;
+            align-items: flex-end;
         }
         
         .dialog-tab {
-            padding: 12px 20px;
-            background: transparent;
-            border: none;
-            border-bottom: 3px solid transparent;
+            padding: 8px 20px 12px 20px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-bottom: none;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s;
+            transition: background 0.2s;
             position: relative;
+            margin-right: 1px;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #666;
         }
         
         .dialog-tab.active {
             background: white;
-            border-bottom-color: #667eea;
-            color: #667eea;
+            border-color: #333;
+            color: #333;
         }
         
-        .dialog-tab:hover {
-            background: #e9ecef;
+        .dialog-tab:hover:not(.active) {
+            background: #e8e8e8;
         }
         
         .dialog-tab .tab-name {
-            margin-right: 8px;
+            flex: 1;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .dialog-tab .tab-close {
-            background: #dc3545;
-            color: white;
+            background: #e0e0e0;
+            color: #666;
             border: none;
-            border-radius: 50%;
             width: 18px;
             height: 18px;
-            font-size: 10px;
+            font-size: 12px;
             cursor: pointer;
             margin-left: 8px;
-            display: none;
-        }
-        
-        .dialog-tab:hover .tab-close {
-            display: inline-block;
-        }
-        
-        .dialog-tab .tab-close:hover {
-            background: #c82333;
-        }
-        
-        .add-dialog-btn {
-            padding: 12px 16px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 0;
-            cursor: pointer;
-            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: background 0.2s;
         }
         
+        .dialog-tab:hover .tab-close {
+            background: #ccc;
+        }
+        
+        .dialog-tab .tab-close:hover {
+            background: #999;
+            color: white;
+        }
+        
+        .add-dialog-btn {
+            padding: 8px 16px 12px 16px;
+            background: #333;
+            color: white;
+            border: 1px solid #333;
+            border-bottom: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 400;
+            transition: background 0.2s;
+            margin-left: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 45px;
+        }
+        
         .add-dialog-btn:hover {
-            background: #218838;
+            background: #555;
         }
         
         .dialog-content {
@@ -411,28 +496,27 @@
         
         .format-btn {
             padding: 6px 12px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
+            background: white;
+            border: 1px solid #e0e0e0;
             cursor: pointer;
             font-size: 0.8rem;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
         
         .format-btn:hover {
-            background: #e9ecef;
+            background: #f5f5f5;
         }
         
         .format-btn.active {
-            background: #667eea;
+            background: #333;
             color: white;
-            border-color: #667eea;
+            border-color: #333;
         }
         
         /* Contextual relevance styles */
         .context-panel {
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
+            background: white;
+            border-top: 1px solid #e0e0e0;
             padding: 15px;
             display: none;
         }
@@ -450,46 +534,45 @@
         
         .context-toggle {
             padding: 8px 12px;
-            background: #28a745;
+            background: #333;
             color: white;
-            border: none;
-            border-radius: 6px;
+            border: 1px solid #333;
             cursor: pointer;
             font-size: 0.9rem;
             transition: background 0.2s;
         }
         
         .context-toggle:hover {
-            background: #218838;
+            background: #555;
         }
         
         .context-toggle.active {
-            background: #dc3545;
+            background: #999;
+            border-color: #999;
         }
         
         .context-toggle.active:hover {
-            background: #c82333;
+            background: #777;
         }
         
         .relevance-indicator {
             display: inline-block;
             width: 12px;
             height: 12px;
-            border-radius: 50%;
             margin-right: 8px;
         }
         
-        .relevance-high { background: #28a745; }
-        .relevance-medium { background: #ffc107; }
-        .relevance-low { background: #dc3545; }
+        .relevance-high { background: #333; }
+        .relevance-medium { background: #999; }
+        .relevance-low { background: #ccc; }
         
         .context-summary {
-            background: #e9ecef;
+            background: #f5f5f5;
             padding: 10px;
-            border-radius: 6px;
             margin-top: 10px;
             font-size: 0.9rem;
-            color: #495057;
+            color: #333;
+            border: 1px solid #e0e0e0;
         }
         
         .context-keywords {
@@ -500,15 +583,14 @@
         }
         
         .context-keyword {
-            background: #667eea;
+            background: #333;
             color: white;
             padding: 2px 8px;
-            border-radius: 12px;
             font-size: 0.8rem;
         }
         
         .message.context-relevant {
-            border-left: 4px solid #28a745;
+            border-left: 4px solid #333;
         }
         
         .message.context-weak {
@@ -517,38 +599,105 @@
         
         .context-filter {
             padding: 6px 10px;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
+            border: 1px solid #e0e0e0;
             font-size: 0.8rem;
             background: white;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
         
         .context-filter:hover {
-            background: #f8f9fa;
+            background: #f5f5f5;
         }
         
         .context-filter.active {
-            background: #667eea;
+            background: #333;
             color: white;
-            border-color: #667eea;
+            border-color: #333;
         }
         @media (max-width: 768px) {
-            .container { padding: 10px; }
-            .header h1 { font-size: 2rem; }
-            .settings-grid { grid-template-columns: 1fr; }
-            .message-content { max-width: 85%; }
-            .input-wrapper { flex-direction: column; }
-            .button-group { justify-content: center; }
+            .container { 
+                max-width: 100%;
+                margin: 0;
+            }
+            .header-content {
+                padding: 0 15px;
+                height: 50px;
+                flex-direction: column;
+                gap: 5px;
+            }
+            .header h1 { 
+                font-size: 1.2rem; 
+                text-align: center;
+            }
+            .header p { 
+                font-size: 0.8rem;
+                text-align: center;
+            }
+            .header-actions {
+                gap: 8px;
+            }
+            .header-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .settings-grid { 
+                grid-template-columns: 1fr; 
+                gap: 15px;
+            }
+            .dialog-tabs {
+                height: 40px;
+            }
+            .dialog-tab {
+                padding: 6px 15px 10px 15px;
+                min-width: 100px;
+                font-size: 0.8rem;
+            }
+            .add-dialog-btn {
+                padding: 6px 12px 10px 12px;
+                min-width: 40px;
+            }
+            .message-content { 
+                max-width: 90%; 
+            }
+            .input-wrapper { 
+                flex-direction: column; 
+                gap: 12px;
+            }
+            .button-group { 
+                justify-content: center;
+                gap: 10px;
+            }
+            .send-button, .clear-button {
+                padding: 14px 20px;
+                font-size: 0.9rem;
+            }
+            .context-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>AI Chat Assistant</h1>
-            <p>No API keys required</p>
+            <div class="header-content">
+                <div>
+                    <h1>AI Chat Assistant</h1>
+                    <p>Powered by Puter.js - No API keys required</p>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="app.toggleContextAnalysis()" id="header-context-btn">
+                        <span class="btn-icon">🔍</span>
+                        Context
+                    </button>
+                    <button class="header-btn" onclick="app.showSettings()">
+                        <span class="btn-icon">⚙️</span>
+                        Settings
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="chat-container">
@@ -1201,12 +1350,15 @@
                     // Clear existing options
                     this.modelSelect.innerHTML = '';
                     
-                    // Add all models from the JSON file
-                    data.models.forEach(model => {
+                    // Sort models by category and popularity
+                    const sortedModels = this.sortModels(data.models);
+                    
+                    // Add sorted models to the select
+                    sortedModels.forEach(model => {
                         if (model && model.trim() !== '') {
                             const option = document.createElement('option');
                             option.value = model;
-                            option.textContent = model;
+                            option.textContent = this.formatModelDisplayName(model);
                             this.modelSelect.appendChild(option);
                         }
                     });
@@ -1216,13 +1368,108 @@
                 }
             }
 
+            sortModels(models) {
+                // Define model categories and their priority
+                const categories = {
+                    'gpt': { priority: 1, name: 'OpenAI GPT' },
+                    'o1': { priority: 2, name: 'OpenAI O1' },
+                    'o3': { priority: 3, name: 'OpenAI O3' },
+                    'o4': { priority: 4, name: 'OpenAI O4' },
+                    'claude': { priority: 5, name: 'Anthropic Claude' },
+                    'gemini': { priority: 6, name: 'Google Gemini' },
+                    'llama': { priority: 7, name: 'Meta Llama' },
+                    'mistral': { priority: 8, name: 'Mistral AI' },
+                    'qwen': { priority: 9, name: 'Qwen' },
+                    'deepseek': { priority: 10, name: 'DeepSeek' },
+                    'grok': { priority: 11, name: 'Grok' },
+                    'cohere': { priority: 12, name: 'Cohere' },
+                    'openrouter': { priority: 13, name: 'OpenRouter' }
+                };
+
+                return models.sort((a, b) => {
+                    const aCategory = this.getModelCategory(a);
+                    const bCategory = this.getModelCategory(b);
+                    
+                    // First sort by category priority
+                    if (aCategory.priority !== bCategory.priority) {
+                        return aCategory.priority - bCategory.priority;
+                    }
+                    
+                    // Then sort alphabetically within category
+                    return a.localeCompare(b);
+                });
+            }
+
+            getModelCategory(model) {
+                const lowerModel = model.toLowerCase();
+                
+                for (const [key, category] of Object.entries(this.modelCategories)) {
+                    if (lowerModel.includes(key)) {
+                        return category;
+                    }
+                }
+                
+                return { priority: 999, name: 'Other' };
+            }
+
+            formatModelDisplayName(model) {
+                // Remove common prefixes for cleaner display
+                const cleanName = model
+                    .replace(/^openrouter:/, '')
+                    .replace(/^anthropic\//, '')
+                    .replace(/^openai\//, '')
+                    .replace(/^google\//, '')
+                    .replace(/^meta-llama\//, '')
+                    .replace(/^mistralai\//, '')
+                    .replace(/^qwen\//, '')
+                    .replace(/^deepseek\//, '')
+                    .replace(/^x-ai\//, '')
+                    .replace(/^cohere\//, '');
+                
+                // Convert kebab-case to Title Case
+                return cleanName
+                    .split('-')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+            }
+
+            get modelCategories() {
+                return {
+                    'gpt': { priority: 1, name: 'OpenAI GPT' },
+                    'o1': { priority: 2, name: 'OpenAI O1' },
+                    'o3': { priority: 3, name: 'OpenAI O3' },
+                    'o4': { priority: 4, name: 'OpenAI O4' },
+                    'claude': { priority: 5, name: 'Anthropic Claude' },
+                    'gemini': { priority: 6, name: 'Google Gemini' },
+                    'llama': { priority: 7, name: 'Meta Llama' },
+                    'mistral': { priority: 8, name: 'Mistral AI' },
+                    'qwen': { priority: 9, name: 'Qwen' },
+                    'deepseek': { priority: 10, name: 'DeepSeek' },
+                    'grok': { priority: 11, name: 'Grok' },
+                    'cohere': { priority: 12, name: 'Cohere' },
+                    'openrouter': { priority: 13, name: 'OpenRouter' }
+                };
+            }
+
             // Contextual Relevance Methods
             toggleContextAnalysis() {
                 const isActive = this.contextToggle.classList.contains('active');
+                const headerBtn = document.getElementById('header-context-btn');
+                
                 if (isActive) {
                     this.disableContextAnalysis();
+                    headerBtn?.classList.remove('active');
                 } else {
                     this.enableContextAnalysis();
+                    headerBtn?.classList.add('active');
+                }
+            }
+
+            showSettings() {
+                // Toggle settings panel visibility
+                const settingsPanel = document.querySelector('.settings-panel');
+                if (settingsPanel) {
+                    settingsPanel.style.display = settingsPanel.style.display === 'none' ? 'block' : 'none';
                 }
             }
 
