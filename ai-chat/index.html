@@ -777,18 +777,7 @@
                 font-size: 0.7rem;
             }
             
-            /* Phone-specific features */
-            .input-container.always-show {
-                position: sticky;
-                bottom: 0;
-                background: white;
-                border-top: 1px solid #e0e0e0;
-                z-index: 100;
-            }
-            
-            .chat-messages.compact {
-                padding-bottom: 80px;
-            }
+
         }
         
         @media (max-width: 480px) {
@@ -1049,26 +1038,10 @@
                     </div>
                     
                     <div class="setting-group">
-                        <label for="auto-append">Auto Append (Phone)</label>
-                        <select id="auto-append">
-                            <option value="false">Disabled</option>
-                            <option value="true">Enabled</option>
-                        </select>
-                    </div>
-                    
-                    <div class="setting-group">
-                        <label for="always-show-input">Always Show Input (Phone)</label>
-                        <select id="always-show-input">
-                            <option value="false">Disabled</option>
-                            <option value="true">Enabled</option>
-                        </select>
-                    </div>
-                    
-                    <div class="setting-group">
                         <label for="image-generation">Image Generation</label>
                         <select id="image-generation">
                             <option value="false">Disabled</option>
-                            <option value="true">Enabled</option>
+                            <option value="true">Enabled (DALL-E)</option>
                         </select>
                     </div>
                 </div>
@@ -1174,8 +1147,6 @@
                 this.contextStatus = document.getElementById('context-status');
                 this.contextSummary = document.getElementById('context-summary');
                 this.contextKeywords = document.getElementById('context-keywords');
-                this.autoAppend = document.getElementById('auto-append');
-                this.alwaysShowInput = document.getElementById('always-show-input');
                 this.imageGeneration = document.getElementById('image-generation');
             }
 
@@ -1193,10 +1164,7 @@
                     this.toggleContextAnalysis();
                 });
 
-                // Phone-specific feature listeners
-                this.alwaysShowInput.addEventListener('change', (e) => {
-                    this.toggleAlwaysShowInput(e.target.value === 'true');
-                });
+
 
                 // Context filter events
                 document.addEventListener('click', (e) => {
@@ -1315,10 +1283,7 @@
 
                 this.addMessage('user', message, imageUrl, dialogId);
                 
-                // Handle auto-append for phone users
-                if (this.autoAppend.value === 'true' && message) {
-                    this.appendToLastMessage(message, dialogId);
-                }
+
                 
                 messageInput.value = '';
                 imageUrlInput.value = '';
@@ -1338,11 +1303,11 @@
                     
                     // Check if image generation is enabled
                     if (this.imageGeneration.value === 'true' && message && !imageUrl) {
-                        // Generate image using Puter's txt2img
+                        // Generate image using DALL-E API
                         try {
                             const imageResponse = await puter.ai.txt2img(message, {
-                                width: 1024,
-                                height: 1024,
+                                model: "dall-e-3",
+                                size: "1024x1024",
                                 quality: "standard"
                             });
                             
@@ -1517,39 +1482,7 @@
                 }
             }
 
-            appendToLastMessage(message, dialogId = this.currentDialogId) {
-                const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
-                const lastMessage = chatMessages.lastElementChild;
-                
-                if (lastMessage && lastMessage.classList.contains('user')) {
-                    const contentDiv = lastMessage.querySelector('.message-content');
-                    if (contentDiv) {
-                        const currentText = contentDiv.textContent || contentDiv.innerText;
-                        contentDiv.innerHTML = this.formatText(currentText + '\n' + message);
-                    }
-                }
-            }
 
-            toggleAlwaysShowInput(enabled) {
-                const inputContainers = document.querySelectorAll('.input-container');
-                const chatMessages = document.querySelectorAll('.chat-messages');
-                
-                inputContainers.forEach(container => {
-                    if (enabled) {
-                        container.classList.add('always-show');
-                    } else {
-                        container.classList.remove('always-show');
-                    }
-                });
-                
-                chatMessages.forEach(messages => {
-                    if (enabled) {
-                        messages.classList.add('compact');
-                    } else {
-                        messages.classList.remove('compact');
-                    }
-                });
-            }
 
             clearChat(dialogId = this.currentDialogId) {
                 const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
@@ -1670,13 +1603,7 @@
                 // Initialize the new dialog
                 this.initializeDialog(dialogId);
                 
-                // Apply phone-specific features to new dialog
-                if (this.alwaysShowInput.value === 'true') {
-                    const newInputContainer = dialogContent.querySelector('.input-container');
-                    const newChatMessages = dialogContent.querySelector('.chat-messages');
-                    if (newInputContainer) newInputContainer.classList.add('always-show');
-                    if (newChatMessages) newChatMessages.classList.add('compact');
-                }
+
                 
                 // Switch to the new dialog
                 this.switchDialog(dialogId);
