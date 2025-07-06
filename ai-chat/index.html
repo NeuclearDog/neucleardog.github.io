@@ -1303,21 +1303,24 @@
                     
                     // Check if image generation is enabled
                     if (this.imageGeneration.value === 'true' && message && !imageUrl) {
-                        // Generate image using DALL-E API
-                        try {
-                            const imageResponse = await puter.ai.txt2img(message, {
-                                model: "dall-e-3",
-                                size: "1024x1024",
-                                quality: "standard"
+                        // Generate image using Puter's txt2img
+                        puter.ai.txt2img(message)
+                            .then(imageElement => {
+                                // Add the generated image to the chat
+                                this.addMessage('assistant', `Generated image for: "${message}"`, null, dialogId);
+                                const chatMessages = document.getElementById(`chat-messages-${dialogId}`);
+                                const lastMessage = chatMessages.lastElementChild;
+                                if (lastMessage && lastMessage.classList.contains('assistant')) {
+                                    const contentDiv = lastMessage.querySelector('.message-content');
+                                    if (contentDiv) {
+                                        contentDiv.appendChild(imageElement);
+                                    }
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Image generation error:', error);
+                                this.addMessage('assistant', `Failed to generate image: ${error.message}`, null, dialogId);
                             });
-                            
-                            if (imageResponse && imageResponse.url) {
-                                this.addMessage('assistant', `Generated image for: "${message}"`, imageResponse.url, dialogId);
-                            }
-                        } catch (imgError) {
-                            console.error('Image generation error:', imgError);
-                            this.addMessage('assistant', `Failed to generate image: ${imgError.message}`, null, dialogId);
-                        }
                     }
                     
                     if (imageUrl) {
