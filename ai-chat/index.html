@@ -1303,7 +1303,7 @@
                     
                     // Check if image generation is enabled
                     if (this.imageGeneration.value === 'true' && message && !imageUrl) {
-                        // Generate image using Puter's txt2img
+                        // Generate image using Puter's txt2img only
                         puter.ai.txt2img(message)
                             .then(imageElement => {
                                 // Add the generated image to the chat
@@ -1321,20 +1321,24 @@
                                 console.error('Image generation error:', error);
                                 this.addMessage('assistant', `Failed to generate image: ${error.message}`, null, dialogId);
                             });
-                    }
-                    
-                    if (imageUrl) {
-                        response = await puter.ai.chat(message || "What do you see in this image?", imageUrl, options);
                     } else {
-                        response = await puter.ai.chat(message, options);
+                        // Regular chat functionality (only if image generation is disabled or image URL is provided)
+                        if (imageUrl) {
+                            response = await puter.ai.chat(message || "What do you see in this image?", imageUrl, options);
+                        } else {
+                            response = await puter.ai.chat(message, options);
+                        }
                     }
 
                     this.hideTypingIndicator(dialogId);
 
-                    if (options.stream) {
-                        await this.handleStreamResponse(response, dialogId);
-                    } else {
-                        this.addMessage('assistant', response, null, dialogId);
+                    // Only handle chat response if we have one (not for image generation)
+                    if (response) {
+                        if (options.stream) {
+                            await this.handleStreamResponse(response, dialogId);
+                        } else {
+                            this.addMessage('assistant', response, null, dialogId);
+                        }
                     }
 
                 } catch (error) {
